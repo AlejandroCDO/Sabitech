@@ -1,34 +1,45 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
 class CharlaController extends Controller
 {
-    /**
-     * GET /api/charlas
-     * Devuelve las charlas almacenadas en MySQL.
-     */
-    public function index(): JsonResponse
+    public function index()
     {
-        $charlas = DB::table('charla')
+        $charlas = DB::table('charlas')
+            ->join('ponentes', 'charlas.ponente_id', '=', 'ponentes.id')
+            ->join('ubicaciones', 'charlas.ubicacion_id', '=', 'ubicaciones.id')
             ->select(
-                'id',
-                'titulo',
-                'descripcion',
-                'ponente',
-                'ubicacion',
-                'fecha_inicio',
-                'fecha_fin',
-                'aforo',
-                'estado'
+                'charlas.id',
+                'charlas.titulo',
+                'charlas.descripcion',
+                'charlas.inicio',
+                'charlas.fin',
+                'charlas.aforo',
+                'charlas.plazas_ocupadas',
+                'charlas.cancelada',
+
+                'ponentes.id as ponente_id',
+                'ponentes.nombre as ponente_nombre',
+                'ponentes.biografia as ponente_biografia',
+                'ponentes.foto_url as ponente_foto',
+                'ponentes.especialidad as ponente_especialidad',
+                'ponentes.linkedin_url as ponente_linkedin',
+
+                'ubicaciones.id as ubicacion_id',
+                'ubicaciones.nombre as ubicacion_nombre',
+                'ubicaciones.provincia',
+                'ubicaciones.municipio',
+                'ubicaciones.calle',
+                'ubicaciones.codigo_postal',
+                'ubicaciones.numero',
+                'ubicaciones.puerta'
             )
-            ->orderBy('id')
+            ->orderBy('charlas.inicio', 'asc')
             ->get();
 
-        return response()->json($charlas, 200);
+        return response()->json($charlas);
     }
 }
