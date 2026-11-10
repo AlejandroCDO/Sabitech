@@ -15,6 +15,7 @@ class CharlaController extends Controller
                 'charlas.id',
                 'charlas.titulo',
                 'charlas.descripcion',
+                'charlas.foto_url',
                 'charlas.inicio',
                 'charlas.fin',
                 'charlas.aforo',

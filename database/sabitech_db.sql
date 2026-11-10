@@ -49,6 +49,7 @@ CREATE TABLE `charlas` (
   `ubicacion_id` bigint(20) UNSIGNED NOT NULL,
   `titulo` varchar(100) NOT NULL,
   `descripcion` text NOT NULL,
+  `foto_url` text NOT NULL,
   `inicio` datetime NOT NULL,
   `fin` datetime NOT NULL,
   `aforo` int(11) NOT NULL,

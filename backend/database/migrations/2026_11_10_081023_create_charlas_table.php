@@ -15,6 +15,7 @@ return new class extends Migration
             $table->unsignedBigInteger('ubicacion_id');
             $table->string('titulo', 100);
             $table->text('descripcion');
+            $table->text('foto_url')->nullable();
             $table->dateTime('inicio');
             $table->dateTime('fin');
             $table->integer('aforo');
