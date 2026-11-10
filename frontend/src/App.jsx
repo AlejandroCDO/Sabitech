@@ -16,7 +16,7 @@ function App() {
         const token = localStorage.getItem('token');
         if (token) {
             try {
-                const user = await getUser;
+                const user = await getUser(token);
                 console.log(user);
                 setLogeado(true);
             }catch(error){
