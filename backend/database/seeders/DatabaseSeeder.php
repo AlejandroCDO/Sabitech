@@ -12,6 +12,10 @@ class DatabaseSeeder extends Seeder
             PonenteSeeder::class,
             UbicacionSeeder::class,
             CharlaSeeder::class,
+            RolesSeeder::class,
+            UsuariosSeeder::class,
+            ReservasSeeder::class,
+            AsistenciasSeeder::class,
         ]);
     }
 }
