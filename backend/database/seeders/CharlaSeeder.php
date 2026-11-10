@@ -60,20 +60,23 @@ class CharlaSeeder extends Seeder
 
         foreach ($charlas as $i => [$titulo, $descripcion, $fotoUrl, $dias, $hora, $aforo, $ocupadas, $cancelada]) {
 
-            $inicio = now()->addDays($dias)->setTime($hora, 0);
+    $inicio = now()->addDays($dias)->setTime($hora, 0);
 
-            DB::table('charlas')->insert([
-                'ponente_id' => $ponentes[$i % count($ponentes)],
-                'ubicacion_id' => $ubicaciones[$i % count($ubicaciones)],
-                'titulo' => $titulo,
-                'descripcion' => $descripcion,
-                'foto_url' => $fotoUrl,
-                'inicio' => $inicio,
-                'fin' => $inicio->copy()->addHour(),
-                'aforo' => $aforo,
-                'plazas_ocupadas' => $ocupadas,
-                'cancelada' => $cancelada,
-            ]);
-        }
+    DB::table('charlas')->updateOrInsert(
+        ['titulo' => $titulo],
+        [
+            'ponente_id' => $ponentes[$i % count($ponentes)],
+            'ubicacion_id' => $ubicaciones[$i % count($ubicaciones)],
+            'descripcion' => $descripcion,
+            'foto_url' => $fotoUrl,
+            'inicio' => $inicio,
+            'fin' => $inicio->copy()->addHour(),
+            'aforo' => $aforo,
+            'plazas_ocupadas' => $ocupadas,
+            'cancelada' => $cancelada,
+            'updated_at' => now(),
+        ]
+    );
+}
     }
 }
