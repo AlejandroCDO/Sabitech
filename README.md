@@ -1,6 +1,7 @@
 # Sabitech
 
-Proyecto de Fin de Ciclo DAW 2026/27
+Trabajo de Fin de Ciclo DAW 2026/27
+
 
 # Integrantes
 

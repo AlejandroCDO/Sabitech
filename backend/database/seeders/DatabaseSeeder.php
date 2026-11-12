@@ -1,0 +1,21 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+
+class DatabaseSeeder extends Seeder
+{
+    public function run(): void
+    {
+        $this->call([
+            PonenteSeeder::class,
+            UbicacionSeeder::class,
+            CharlaSeeder::class,
+            RolesSeeder::class,
+            UsuariosSeeder::class,
+            ReservasSeeder::class,
+            AsistenciasSeeder::class,
+        ]);
+    }
+}
