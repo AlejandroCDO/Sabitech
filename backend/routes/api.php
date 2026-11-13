@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CharlaController;
+use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\UsuarioController;
 
 // Rutas públicas (no necesitan token)
@@ -13,6 +14,9 @@ Route::post('/login', [UsuarioController::class, 'login']);
 Route::middleware('token')->group(function () {
     Route::get('/usuarios', [UsuarioController::class, 'getUsuarios']);
     Route::post('/logout', [UsuarioController::class, 'logout']);
+
+    Route::post('/reservas', [ReservaController::class, 'crearReserva']);
+    Route::patch('/reservas/{id}/cancelar', [ReservaController::class, 'cancelarReserva'])->whereNumber('id');
 });
 
 // Crear charlas (solo admin). Descomentar cuando el frontend envíe el token:
