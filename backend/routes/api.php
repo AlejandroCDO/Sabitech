@@ -1,12 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AsistenciaController;
 use App\Http\Controllers\CharlaController;
 use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\UsuarioController;
 
 // Rutas públicas (no necesitan token)
 Route::get('/charlas', [CharlaController::class, 'index']);
+Route::get('/asistencias', [AsistenciaController::class, 'index']);
 Route::post('/register', [UsuarioController::class, 'crearUsuario']);
 Route::post('/login', [UsuarioController::class, 'login']);
 
