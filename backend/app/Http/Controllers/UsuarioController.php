@@ -28,6 +28,28 @@ class UsuarioController extends Controller
         return response()->json($usuarios);
     }
 
+    // Obtener los datos del usuario autenticado
+public function getUsuario(Request $request)
+{
+    // Obtener el usuario identificado por el middleware
+    $usuarioAutenticado = $request->attributes->get('usuario');
+
+    $usuario = DB::table('usuarios')
+        ->join('roles', 'usuarios.rol_id', '=', 'roles.id')
+        ->select(
+            'usuarios.id',
+            'usuarios.nombre',
+            'usuarios.email',
+            'usuarios.telefono',
+            'usuarios.fecha_nacimiento',
+            'roles.nombre as rol'
+        )
+        ->where('usuarios.id', $usuarioAutenticado->id)
+        ->first();
+
+    return response()->json($usuario);
+}
+
     // 2. Crear un usuario (registro)
     public function crearUsuario(Request $request)
     {

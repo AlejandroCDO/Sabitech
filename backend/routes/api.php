@@ -15,6 +15,7 @@ Route::post('/login', [UsuarioController::class, 'login']);
 // Rutas que necesitan token
 Route::middleware('token')->group(function () {
     Route::get('/usuarios', [UsuarioController::class, 'getUsuarios']);
+    Route::get('/usuario', [UsuarioController::class, 'getUsuario']);
     Route::post('/logout', [UsuarioController::class, 'logout']);
 
     Route::post('/reservas', [ReservaController::class, 'crearReserva']);
