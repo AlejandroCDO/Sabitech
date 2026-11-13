@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class CharlaController extends Controller
 {
+    // 1. Listar todas las charlas
     public function index()
     {
         $charlas = DB::table('charlas')
@@ -42,5 +45,69 @@ class CharlaController extends Controller
             ->get();
 
         return response()->json($charlas);
+    }
+
+
+    // 2. Crear una charla
+    public function crearCharla(Request $request)
+    {
+        // 1. Validar los datos recibidos
+        $datos = $request->validate([
+            'ponente_id' => 'required|integer',
+            'ubicacion_id' => 'required|integer',
+            'titulo' => 'required|string|max:100',
+            'descripcion' => 'required|string',
+            'foto_url' => 'required|url|max:2048',
+            'inicio' => 'required|date',
+            'fin' => 'required|date|after:inicio',
+            'aforo' => 'required|integer|min:1'
+        ]);
+
+        // 2. Comprobar que existe el ponente
+        $ponente = DB::table('ponentes')
+            ->where('id', $datos['ponente_id'])
+            ->exists();
+
+        if (!$ponente) {
+            return response()->json([
+                'mensaje' => 'El ponente no existe'
+            ], 404);
+        }
+
+        // 3. Comprobar que existe la ubicación
+        $ubicacion = DB::table('ubicaciones')
+            ->where('id', $datos['ubicacion_id'])
+            ->exists();
+
+        if (!$ubicacion) {
+            return response()->json([
+                'mensaje' => 'La ubicación no existe'
+            ], 404);
+        }
+
+        // 4. Preparar los datos para la BBDD
+        $datos['plazas_ocupadas'] = 0;
+        $datos['cancelada'] = false;
+
+        // 5. Insertar la charla
+        $id = DB::table('charlas')
+            ->insertGetId($datos);
+
+        // 6. Recuperar la charla creada
+        $charla = DB::table('charlas')
+            ->where('id', $id)
+            ->first();
+
+        if (!$charla) {
+            return response()->json([
+                'mensaje' => 'La charla no se ha podido crear'
+            ], 500);
+        }
+
+        // 7. Devolver la respuesta
+        return response()->json([
+            'mensaje' => 'Charla creada correctamente',
+            'charla' => $charla
+        ], 201);
     }
 }
