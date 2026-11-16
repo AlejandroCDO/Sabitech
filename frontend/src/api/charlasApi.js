@@ -1,6 +1,6 @@
 import { Charla } from "../models/charla.js";
 import { ApiError } from "./ApiError.js";
-import { Page } from "../models/Page.js";
+import { Page } from "../models/page.js";
 
 const API_BASE_URL = "http://localhost:8080/api";
 const CHARLAS_URL = `${API_BASE_URL}/charlas`;
