@@ -1,7 +1,7 @@
-
 import { useEffect, useState } from "react";
 import "./App.css";
 import { MainView } from "./views/MainView";
+import { CharlasView } from "./views/charlas/CharlasView";
 import { LoginView } from "./views/LoginView";
 import { RegisterView } from "./views/RegisterView";
 import { getUser } from "./api/usersApi";
@@ -57,18 +57,34 @@ function App() {
     setVista("inicio");
   }
 
+  function irACharlas() {
+  setVista("charlas");
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+}
+
   return (
     <>
-      {vista === "inicio" && (
+      {(vista === "inicio" || vista === "charlas") && (
         <>
           <Navbar
             logeado={logeado}
+            vistaActiva={vista}
             onIrAInicio={irAInicio}
+            onIrACharlas={irACharlas}
             onIrALogin={() => setVista("login")}
             onIrARegistro={irARegistro}
           />
 
-          <MainView />
+          {vista === "inicio" && (
+            <MainView onIrACharlas={irACharlas} />
+          )}
+
+          {vista === "charlas" && (
+            <CharlasView />
+          )}
 
           <Footer />
         </>

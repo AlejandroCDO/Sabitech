@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import "./Navbar.css";
 import logo from "../../assets/icons/banner.ico";
@@ -6,8 +5,10 @@ import logo from "../../assets/icons/banner.ico";
 function Navbar({
   logeado,
   onIrAInicio,
+  onIrACharlas,
   onIrALogin,
   onIrARegistro,
+  vistaActiva = "inicio",
   modoAuth = false,
 }) {
   const [menuAbierto, setMenuAbierto] = useState(false);
@@ -21,6 +22,11 @@ function Navbar({
   function irAInicio() {
     cerrarMenus();
     onIrAInicio();
+  }
+
+  function irACharlas() {
+    cerrarMenus();
+    onIrACharlas();
   }
 
   function irALogin() {
@@ -44,7 +50,7 @@ function Navbar({
         <span className="logo-text">SABITECH</span>
       </a>
 
-      {/* MENÚ MÓVIL: SOLO EN LA PÁGINA PRINCIPAL */}
+      {/* MENÚ MÓVIL */}
       {!modoAuth && (
         <button
           className="menu-toggle"
@@ -58,14 +64,22 @@ function Navbar({
         </button>
       )}
 
-      {/* NAVEGACIÓN: SOLO EN LA PÁGINA PRINCIPAL */}
+      {/* NAVEGACIÓN */}
       {!modoAuth && (
         <nav className={`navbar-links ${menuAbierto ? "open" : ""}`}>
-          <a href="#inicio" className="active" onClick={irAInicio}>
+          <a
+            href="#inicio"
+            className={vistaActiva === "inicio" ? "active" : ""}
+            onClick={irAInicio}
+          >
             Inicio
           </a>
 
-          <a href="#charlas" onClick={irAInicio}>
+          <a
+            href="#charlas"
+            className={vistaActiva === "charlas" ? "active" : ""}
+            onClick={irACharlas}
+          >
             Charlas
           </a>
 

@@ -88,7 +88,9 @@ const ICONOS = {
       <circle cx="12" cy="7" r="4" />
     </>
   ),
-  externo: <path d="M14 3h7v7M21 3l-9 9M19 14v5a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h5" />,
+  externo: (
+    <path d="M14 3h7v7M21 3l-9 9M19 14v5a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h5" />
+  ),
   alerta: (
     <>
       <circle cx="12" cy="12" r="9" />
@@ -151,7 +153,7 @@ function claveDia(valor) {
   return `${fecha.getFullYear()}-${fecha.getMonth()}-${fecha.getDate()}`;
 }
 
-export function MainView() {
+export function MainView({ onIrACharlas }) {
   const [charlas, setCharlas] = useState([]);
   const [diaActivo, setDiaActivo] = useState("");
   const [cargando, setCargando] = useState(true);
@@ -189,7 +191,9 @@ export function MainView() {
       })
       .catch((errorCarga) => {
         if (activo) {
-          setError(errorCarga.message || "No se han podido cargar las charlas.");
+          setError(
+            errorCarga.message || "No se han podido cargar las charlas.",
+          );
         }
       })
       .finally(() => {
@@ -227,7 +231,7 @@ export function MainView() {
   const diasVisibles = dias.slice(0, 2);
   const diaSeleccionado = diasVisibles.some((dia) => dia.clave === diaActivo)
     ? diaActivo
-    : diasVisibles[0]?.clave ?? "";
+    : (diasVisibles[0]?.clave ?? "");
   const destacadas = proximas
     .filter((charla) => claveDia(charla.inicio) === diaSeleccionado)
     .slice(0, 3);
@@ -248,7 +252,7 @@ export function MainView() {
           }
         });
       },
-      { threshold: 0.12 }
+      { threshold: 0.12 },
     );
 
     elementos.forEach((elemento) => observador.observe(elemento));
@@ -266,7 +270,8 @@ export function MainView() {
       window.scrollTo({ top: 0, behavior: "smooth" });
       await cargarCharlas();
     } catch (errorReserva) {
-      const texto = errorReserva.message || "No se ha podido realizar la reserva.";
+      const texto =
+        errorReserva.message || "No se ha podido realizar la reserva.";
       if (pagina === "detalle") {
         setErrorDetalle(texto);
       } else {
@@ -306,21 +311,28 @@ export function MainView() {
   }
 
   if (pagina === "confirmada" && charlaSeleccionada) {
-    return <PlazaConfirmadaView charla={charlaSeleccionada} onVolver={volverAlPrograma} />;
+    return (
+      <PlazaConfirmadaView
+        charla={charlaSeleccionada}
+        onVolver={volverAlPrograma}
+      />
+    );
   }
 
   return (
     <div className="home" ref={contenedorRef}>
       <header className="home-hero">
         <div className="home-hero-contenido">
-          <span className="home-badge">Jornadas tecnológicas · Edición 2026</span>
+          <span className="home-badge">
+            Jornadas tecnológicas · Edición 2026
+          </span>
           <h1 className="home-hero-titulo">
             <span className="home-hero-marca">SABITECH 2026</span>
             <span className="home-hero-lema">Conecta con el futuro.</span>
           </h1>
           <p className="home-hero-descripcion">
-            Dos días de ideas, tecnología y conexiones reales. Aprende de quienes están construyendo lo que
-            viene.
+            Dos días de ideas, tecnología y conexiones reales. Aprende de
+            quienes están construyendo lo que viene.
           </p>
           <div className="home-hero-meta">
             <span>
@@ -347,7 +359,10 @@ export function MainView() {
           </p>
         </div>
         <div className="home-hero-foto">
-          <img src={heroImage} alt="Escenario de SABITECH con el público asistente" />
+          <img
+            src={heroImage}
+            alt="Escenario de SABITECH con el público asistente"
+          />
           <span className="home-hero-pie">Así vivimos SABITECH 2025</span>
         </div>
       </header>
@@ -375,7 +390,14 @@ export function MainView() {
               <p className="home-eyebrow">Ideas que nos mueven</p>
               <h2>No te pierdas las próximas charlas</h2>
             </div>
-            <a className="home-enlace-flecha" href="#charlas">
+            <a
+              className="home-enlace-flecha"
+              href="#agenda"
+              onClick={(evento) => {
+                evento.preventDefault();
+                onIrACharlas();
+              }}
+            >
               Ver toda la agenda
               <Icono nombre="flecha" />
             </a>
@@ -410,14 +432,21 @@ export function MainView() {
           {!cargando && !error && diasVisibles.length === 0 && (
             <div className="home-estado">
               <Icono nombre="calendario" />
-              <p>No hay próximas charlas disponibles. Vuelve a consultar dentro de unos días.</p>
+              <p>
+                No hay próximas charlas disponibles. Vuelve a consultar dentro
+                de unos días.
+              </p>
             </div>
           )}
 
           {!cargando && !error && diasVisibles.length > 0 && (
             <>
               <div className="home-charlas-controles reveal">
-                <div className="home-dias" role="tablist" aria-label="Días de las charlas">
+                <div
+                  className="home-dias"
+                  role="tablist"
+                  aria-label="Días de las charlas"
+                >
                   {diasVisibles.map((dia) => (
                     <button
                       className={`home-dia ${diaSeleccionado === dia.clave ? "activo" : ""}`}
@@ -432,14 +461,28 @@ export function MainView() {
                   ))}
                 </div>
                 <p className="home-charlas-nota">
-                  {destacadas.length} {destacadas.length === 1 ? "charla destacada" : "charlas destacadas"} ·
-                  Todas las horas en CEST
+                  {destacadas.length}{" "}
+                  {destacadas.length === 1
+                    ? "charla destacada"
+                    : "charlas destacadas"}{" "}
+                  · Todas las horas en CEST
                 </p>
               </div>
 
               {aviso && (
-                <p className={`home-aviso home-aviso--${aviso.tipo}`} role="status">
-                  <Icono nombre={aviso.tipo === "error" ? "alerta" : aviso.tipo === "info" ? "info" : "certificado"} />
+                <p
+                  className={`home-aviso home-aviso--${aviso.tipo}`}
+                  role="status"
+                >
+                  <Icono
+                    nombre={
+                      aviso.tipo === "error"
+                        ? "alerta"
+                        : aviso.tipo === "info"
+                          ? "info"
+                          : "certificado"
+                    }
+                  />
                   {aviso.texto}
                 </p>
               )}
@@ -463,24 +506,37 @@ export function MainView() {
                             evento.currentTarget.src = heroImage;
                           }}
                         />
-                        <span className="home-tarjeta-fecha" aria-label={`${fecha.dia} de ${fecha.mes}`}>
+                        <span
+                          className="home-tarjeta-fecha"
+                          aria-label={`${fecha.dia} de ${fecha.mes}`}
+                        >
                           <span className="home-tarjeta-dia">{fecha.dia}</span>
                           <span className="home-tarjeta-mes">{fecha.mes}</span>
                         </span>
-                        {charla.completa && <span className="home-tarjeta-agotada">Plazas agotadas</span>}
+                        {charla.completa && (
+                          <span className="home-tarjeta-agotada">
+                            Plazas agotadas
+                          </span>
+                        )}
                       </div>
 
                       <div className="home-tarjeta-cuerpo">
-                        <p className="home-tarjeta-tematica">{charla.ponente_especialidad || "Charla SABITECH"}</p>
+                        <p className="home-tarjeta-tematica">
+                          {charla.ponente_especialidad || "Charla SABITECH"}
+                        </p>
                         <h3>{charla.titulo}</h3>
-                        <p className="home-tarjeta-descripcion">{charla.descripcion}</p>
+                        <p className="home-tarjeta-descripcion">
+                          {charla.descripcion}
+                        </p>
 
                         <div className="home-ponente">
                           <span className="home-ponente-icono">
                             <Icono nombre="usuario" />
                           </span>
                           <div>
-                            <p className="home-ponente-nombre">{charla.ponente_nombre || "Ponente SABITECH"}</p>
+                            <p className="home-ponente-nombre">
+                              {charla.ponente_nombre || "Ponente SABITECH"}
+                            </p>
                             <p className="home-ponente-rol">Ponente</p>
                           </div>
                         </div>
@@ -488,7 +544,8 @@ export function MainView() {
                         <div className="home-tarjeta-meta">
                           <span>
                             <Icono nombre="reloj" />
-                            {formatearHora(charla.inicio)} – {formatearHora(charla.fin)}
+                            {formatearHora(charla.inicio)} –{" "}
+                            {formatearHora(charla.fin)}
                           </span>
                           <span>
                             <Icono nombre="ubicacion" />
@@ -497,14 +554,20 @@ export function MainView() {
                         </div>
 
                         <div className="home-tarjeta-pie">
-                          <button className="home-tarjeta-detalle" type="button" onClick={() => abrirDetalle(charla)}>
+                          <button
+                            className="home-tarjeta-detalle"
+                            type="button"
+                            onClick={() => abrirDetalle(charla)}
+                          >
                             Ver detalles
                             <Icono nombre="externo" />
                           </button>
                           <button
                             className="home-boton home-boton--principal home-boton-reserva"
                             type="button"
-                            disabled={charla.completa || reservandoId === charla.id}
+                            disabled={
+                              charla.completa || reservandoId === charla.id
+                            }
                             onClick={() => reservar(charla)}
                           >
                             {reservandoId === charla.id ? (
@@ -531,8 +594,14 @@ export function MainView() {
 
       <section className="home-comunidad" id="comunidad">
         <div className="home-comunidad-imagen reveal">
-          <img src={comunidadImage} alt="Asistentes conversando en SABITECH" loading="lazy" />
-          <span className="home-comunidad-pie">Las mejores ideas empiezan con una conversación.</span>
+          <img
+            src={comunidadImage}
+            alt="Asistentes conversando en SABITECH"
+            loading="lazy"
+          />
+          <span className="home-comunidad-pie">
+            Las mejores ideas empiezan con una conversación.
+          </span>
         </div>
         <div className="home-comunidad-texto reveal">
           <p className="home-eyebrow">Tecnología con personas</p>
@@ -542,8 +611,9 @@ export function MainView() {
             una comunidad.
           </h2>
           <p>
-            En SABITECH reunimos a quienes sienten curiosidad por lo que viene. Profesionales, estudiantes y
-            empresas que comparten conocimiento y hacen que la tecnología avance.
+            En SABITECH reunimos a quienes sienten curiosidad por lo que viene.
+            Profesionales, estudiantes y empresas que comparten conocimiento y
+            hacen que la tecnología avance.
           </p>
           <p>Ven por las charlas. Quédate por las conexiones.</p>
           <a className="home-boton home-boton--contorno" href="#charlas">

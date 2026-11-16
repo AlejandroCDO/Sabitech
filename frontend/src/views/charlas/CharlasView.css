@@ -1,0 +1,308 @@
+
+.agenda-pagina {
+  min-height: 100vh;
+}
+
+.agenda-cabecera {
+  display: grid;
+  grid-template-columns: 1fr 0.85fr;
+  min-height: 330px;
+  background: linear-gradient(135deg, #ffffff 0%, #f4f6f9 100%);
+}
+
+.agenda-cabecera-contenido {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 55px max(32px, calc((100vw - 1280px) / 2));
+}
+
+.agenda-cabecera-contenido h1 {
+  max-width: 600px;
+  margin: 16px 0 0;
+  font-family: "Montserrat", sans-serif;
+  font-size: clamp(34px, 4vw, 48px);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+}
+
+.agenda-cabecera-contenido > p:not(.home-eyebrow) {
+  max-width: 520px;
+  margin: 18px 0 0;
+  font-size: 15px;
+  line-height: 1.65;
+  color: #5b6673;
+}
+
+.agenda-cabecera-datos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+  margin-top: 24px;
+}
+
+.agenda-cabecera-datos span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.agenda-cabecera-datos svg {
+  width: 17px;
+  height: 17px;
+}
+
+.agenda-cabecera-imagen {
+  min-height: 330px;
+  overflow: hidden;
+  background: #0b183d;
+}
+
+.agenda-cabecera-imagen img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.agenda-contenido {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 64px 40px 88px;
+}
+
+.agenda-titulo {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.agenda-titulo h2 {
+  margin: 12px 0 0;
+  font-family: "Montserrat", sans-serif;
+  font-size: clamp(26px, 2.6vw, 34px);
+  line-height: 1.15;
+}
+
+.agenda-titulo > div > p:last-child {
+  margin: 12px 0 0;
+  font-size: 14px;
+  color: #5b6673;
+}
+
+.agenda-contador {
+  padding: 9px 14px;
+  border: 1px solid #dbe2ea;
+  border-radius: 8px;
+  background: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.agenda-controles {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 30px;
+  padding: 20px;
+  border: 1px solid #dbe2ea;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.agenda-buscador {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 46px;
+  padding: 0 14px;
+  border: 1px solid #dbe2ea;
+  border-radius: 8px;
+  background: #f4f6f9;
+}
+
+.agenda-buscador svg {
+  width: 19px;
+  height: 19px;
+  color: #5b6673;
+}
+
+.agenda-buscador input {
+  width: 100%;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #263444;
+  font: inherit;
+  font-size: 13px;
+}
+
+.agenda-buscador input::placeholder {
+  color: #7b8694;
+}
+
+.agenda-buscador:focus-within {
+  border-color: #00bfa5;
+  outline: 2px solid rgba(0, 191, 165, 0.15);
+}
+
+.agenda-filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.agenda-filtros button {
+  min-height: 38px;
+  padding: 0 16px;
+  border: 1px solid #dbe2ea;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #263444;
+  font-family: "Montserrat", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.agenda-filtros button:hover {
+  border-color: #00bfa5;
+}
+
+.agenda-filtros button.activo {
+  border-color: #00bfa5;
+  background: #00bfa5;
+  color: #263444;
+}
+
+.agenda-tarjetas {
+  margin-top: 28px;
+}
+
+.agenda-tarjeta {
+  min-width: 0;
+}
+
+.agenda-estado {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 6px 9px;
+  border-radius: 6px;
+  background: #e9f8f4;
+  color: #087e6c;
+  font-family: "Montserrat", sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.agenda-estado--agotada,
+.agenda-estado--finalizada {
+  background: #e9edf2;
+  color: #596575;
+}
+
+.agenda-estado--cancelada {
+  background: #f8eded;
+  color: #a83232;
+}
+
+.agenda-estado--proxima {
+  background: #e9f8f4;
+  color: #087e6c;
+}
+
+.agenda-fecha-completa {
+  margin-top: 12px;
+  font-size: 11px;
+  color: #5b6673;
+}
+
+.agenda-tarjeta .home-tarjeta-pie {
+  margin-top: 16px;
+}
+
+.agenda-vacio h3 {
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+  font-size: 18px;
+  color: #263444;
+}
+
+.agenda-vacio p {
+  margin: 0;
+}
+
+.agenda-pagina button:focus-visible,
+.agenda-pagina input:focus-visible {
+  outline: 2px solid #00bfa5;
+  outline-offset: 3px;
+}
+
+@media (max-width: 1000px) {
+  .agenda-cabecera {
+    grid-template-columns: 1fr;
+  }
+
+  .agenda-cabecera-contenido {
+    padding: 48px 32px;
+  }
+
+  .agenda-cabecera-imagen {
+    min-height: 280px;
+    max-height: 360px;
+  }
+}
+
+@media (max-width: 760px) {
+  .agenda-cabecera-contenido {
+    padding: 40px 20px;
+  }
+
+  .agenda-cabecera-contenido h1 {
+    font-size: 34px;
+  }
+
+  .agenda-contenido {
+    padding: 44px 20px 60px;
+  }
+
+  .agenda-titulo {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .agenda-controles {
+    padding: 14px;
+  }
+}
+
+@media (max-width: 520px) {
+  .agenda-cabecera-contenido h1 {
+    font-size: 30px;
+  }
+
+  .agenda-cabecera-datos {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .agenda-filtros {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .agenda-filtros button {
+    padding: 0 8px;
+  }
+}
