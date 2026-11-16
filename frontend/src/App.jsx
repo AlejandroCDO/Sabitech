@@ -5,6 +5,7 @@ import { LoginView } from "./views/LoginView";
 import { RegisterView } from "./views/RegisterView";
 import { getUser } from "./api/usersApi";
 import Navbar from "./components/navbar/Navbar";
+import { Footer } from "./components/footer/Footer";
 
 function App() {
   const [logeado, setLogeado] = useState(false);
