@@ -1,0 +1,145 @@
+
+/* FOOTER GENERAL */
+.footer {
+    background-color: #263445;
+    color: #F4F7FA;
+    padding: 45px 6% 20px;
+}
+
+/* CONTENIDO PRINCIPAL */
+.footer-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 50px;
+    padding-bottom: 50px;
+}
+
+/* LOGOTIPO */
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #F4F7FA;
+    text-decoration: none;
+    width: fit-content;
+}
+
+.footer-logo-container {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #F4F6F9;
+    border-radius: 8px;
+    padding: 3px;
+}
+
+.footer-logo-container img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.footer-logo-text {
+    font-family: "Montserrat", sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.footer-logo small {
+    font-size: 9px;
+    margin-top: 5px;
+}
+
+/* DESCRIPCIÓN */
+.footer-brand p {
+    max-width: 260px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #D0D8E2;
+    margin-top: 15px;
+}
+
+/* COLUMNAS */
+.footer-column {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+}
+
+.footer-column h3 {
+    font-size: 14px;
+    margin: 0 0 5px;
+}
+
+.footer-column a,
+.footer-column span {
+    color: #D0D8E2;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+.footer-column a:hover {
+    color: #00BFA6;
+}
+
+/* PARTE INFERIOR */
+.footer-bottom {
+    border-top: 1px solid #405064;
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.footer-bottom p {
+    font-size: 11px;
+    color: #D0D8E2;
+}
+
+.footer-legal {
+    display: flex;
+    gap: 20px;
+}
+
+.footer-legal a {
+    color: #D0D8E2;
+    font-size: 11px;
+    text-decoration: none;
+}
+
+.footer-legal a:hover {
+    color: #00BFA6;
+}
+
+/* TABLETS Y MÓVILES */
+@media (max-width: 768px) {
+
+    .footer-content {
+        grid-template-columns: 1fr 1fr;
+        gap: 35px;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .footer-legal {
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+}
+
+/* MÓVILES PEQUEÑOS */
+@media (max-width: 480px) {
+
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+}

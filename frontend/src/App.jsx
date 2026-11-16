@@ -70,6 +70,8 @@ function App() {
           mensajeExito={mensajeRegistro}
         />
       )}
+
+      <Footer />
     </>
   );
 }

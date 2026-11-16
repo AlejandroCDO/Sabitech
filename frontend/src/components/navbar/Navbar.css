@@ -1,22 +1,143 @@
+
+/* BARRA DE NAVEGACIÓN */
+.navbar {
+    width: 100%;
+    min-height: 76px;
+    padding: 0 6%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #263445;
+    position: relative;
+}
+
 /* LOGOTIPO */
 .navbar-logo {
     display: flex;
     align-items: center;
-    gap: 8px;
-
+    gap: 10px;
     color: #F4F7FA;
     text-decoration: none;
     width: fit-content;
 }
 
+.logo-container {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #F4F6F9;
+    border-radius: 8px;
+    padding: 6px;
+}
+
 .logo-img {
-    width: 25px;
-    height: 25px;
+    width: 32px;
+    height: 32px;
     object-fit: contain;
 }
 
 .logo-text {
+    font-family: "Montserrat", sans-serif;
     font-size: 13px;
     font-weight: 800;
     letter-spacing: -0.4px;
+}
+
+/* ENLACES CENTRALES */
+.navbar-links {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+}
+
+.navbar-links a {
+    color: #F4F7FA;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.navbar-links a:hover,
+.navbar-links a.active {
+    color: #00BFA6;
+}
+
+/* BOTÓN MIS RESERVAS */
+.navbar-reservas {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 17px;
+    border-radius: 8px;
+    background-color: #00BFA6;
+    color: #263445;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+}
+
+.navbar-reservas:hover {
+    background-color: #00a991;
+}
+
+.navbar-reservas svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* BOTÓN MENÚ MÓVIL */
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.menu-toggle span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    margin: 5px 0;
+    background-color: #F4F7FA;
+}
+
+/* DISEÑO RESPONSIVE */
+@media (max-width: 768px) {
+    .navbar {
+        min-height: 68px;
+        padding: 0 5%;
+    }
+
+    .menu-toggle {
+        display: block;
+        order: 3;
+    }
+
+    .navbar-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        padding: 20px;
+        background-color: #263445;
+        flex-direction: column;
+        align-items: center;
+        gap: 22px;
+        z-index: 10;
+    }
+
+    .navbar-links.open {
+        display: flex;
+    }
+
+    .navbar-reservas {
+        margin-left: auto;
+        margin-right: 15px;
+    }
 }

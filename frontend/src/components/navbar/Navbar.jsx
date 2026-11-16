@@ -13,7 +13,9 @@ function Navbar() {
     <header className="navbar">
       {/* LOGOTIPO */}
       <a href="#inicio" className="navbar-logo" onClick={cerrarMenu}>
-        <img src={logo} alt="Logotipo SABITECH" className="logo-img" />
+        <span className="logo-container">
+          <img src={logo} alt="Logotipo SABITECH" className="logo-img" />
+        </span>
 
         <span className="logo-text">SABITECH</span>
       </a>
