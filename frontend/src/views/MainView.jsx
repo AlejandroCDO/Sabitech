@@ -4,6 +4,8 @@ import heroImage from "../assets/hero-sabitech.jpg";
 import comunidadImage from "../assets/comunidad-sabitech.jpg";
 import { list } from "../api/charlasApi";
 import { crearReserva } from "../api/reservasApi";
+import { CharlaDetalleView } from "./CharlaDetalleView";
+import { PlazaConfirmadaView } from "./PlazaConfirmadaView";
 
 const VENTAJAS = [
   {
@@ -156,6 +158,9 @@ export function MainView() {
   const [error, setError] = useState("");
   const [aviso, setAviso] = useState(null);
   const [reservandoId, setReservandoId] = useState(null);
+  const [pagina, setPagina] = useState("lista");
+  const [charlaSeleccionada, setCharlaSeleccionada] = useState(null);
+  const [errorDetalle, setErrorDetalle] = useState("");
   const contenedorRef = useRef(null);
 
   const cargarCharlas = useCallback(async () => {
@@ -163,8 +168,10 @@ export function MainView() {
       const datos = await list();
       setCharlas(datos);
       setError("");
+      return datos;
     } catch (errorCarga) {
       setError(errorCarga.message || "No se han podido cargar las charlas.");
+      return null;
     } finally {
       setCargando(false);
     }
@@ -246,33 +253,60 @@ export function MainView() {
 
     elementos.forEach((elemento) => observador.observe(elemento));
     return () => observador.disconnect();
-  }, [charlas, cargando, diaSeleccionado]);
+  }, [charlas, cargando, diaSeleccionado, pagina]);
 
   async function reservar(charla) {
     setReservandoId(charla.id);
     setAviso(null);
+    setErrorDetalle("");
     try {
       await crearReserva(charla.id);
-      setAviso({
-        tipo: "exito",
-        texto: `Plaza reservada para "${charla.titulo}". Puedes consultarla en Mis reservas.`,
-      });
+      setCharlaSeleccionada(charla);
+      setPagina("confirmada");
+      window.scrollTo({ top: 0, behavior: "smooth" });
       await cargarCharlas();
     } catch (errorReserva) {
-      setAviso({
-        tipo: "error",
-        texto: errorReserva.message || "No se ha podido realizar la reserva.",
-      });
+      const texto = errorReserva.message || "No se ha podido realizar la reserva.";
+      if (pagina === "detalle") {
+        setErrorDetalle(texto);
+      } else {
+        setAviso({ tipo: "error", texto });
+      }
     } finally {
       setReservandoId(null);
     }
   }
 
-  function mostrarDetalle(charla) {
-    setAviso({
-      tipo: "info",
-      texto: `El detalle de "${charla.titulo}" estará disponible próximamente.`,
-    });
+  function abrirDetalle(charla) {
+    setCharlaSeleccionada(charla);
+    setErrorDetalle("");
+    setAviso(null);
+    setPagina("detalle");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function volverAlPrograma() {
+    setPagina("lista");
+    setErrorDetalle("");
+    setAviso(null);
+    cargarCharlas();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  if (pagina === "detalle" && charlaSeleccionada) {
+    return (
+      <CharlaDetalleView
+        charla={charlaSeleccionada}
+        reservando={reservandoId === charlaSeleccionada.id}
+        error={errorDetalle}
+        onVolver={volverAlPrograma}
+        onReservar={() => reservar(charlaSeleccionada)}
+      />
+    );
+  }
+
+  if (pagina === "confirmada" && charlaSeleccionada) {
+    return <PlazaConfirmadaView charla={charlaSeleccionada} onVolver={volverAlPrograma} />;
   }
 
   return (
@@ -463,7 +497,7 @@ export function MainView() {
                         </div>
 
                         <div className="home-tarjeta-pie">
-                          <button className="home-tarjeta-detalle" type="button" onClick={() => mostrarDetalle(charla)}>
+                          <button className="home-tarjeta-detalle" type="button" onClick={() => abrirDetalle(charla)}>
                             Ver detalles
                             <Icono nombre="externo" />
                           </button>
