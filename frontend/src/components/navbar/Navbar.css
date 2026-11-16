@@ -1,0 +1,22 @@
+/* LOGOTIPO */
+.navbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    color: #F4F7FA;
+    text-decoration: none;
+    width: fit-content;
+}
+
+.logo-img {
+    width: 25px;
+    height: 25px;
+    object-fit: contain;
+}
+
+.logo-text {
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: -0.4px;
+}
