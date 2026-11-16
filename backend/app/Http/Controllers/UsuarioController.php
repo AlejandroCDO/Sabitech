@@ -58,8 +58,10 @@ public function getUsuario(Request $request)
             'nombre' => 'required|string|max:100',
             'email' => 'required|email|max:150|unique:usuarios,email',
             'telefono' => 'required|string|max:15',
-            'fecha_nacimiento' => 'required|date|before:today',
+            'fecha_nacimiento' => 'required|date|before_or_equal:' . now()->subYears(16)->toDateString(),
             'password' => 'required|string|min:8'
+        ], [
+            'fecha_nacimiento.before_or_equal' => 'Debes tener al menos 16 años para registrarte.',
         ]);
 
         // 2. Buscar el rol "asistente" (el que se asigna al registrarse)
