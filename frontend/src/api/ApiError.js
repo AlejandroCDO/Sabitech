@@ -13,4 +13,13 @@ export class ApiError extends Error {
   get isNotFound() {
     return this.status === 404;
   }
+
+  get erroresPorCampo() {
+    const errors = this.body?.errors;
+    if (!errors) {
+      return null;
+    }
+
+    return Object.fromEntries(Object.entries(errors).map(([campo, mensajes]) => [campo, mensajes[0]]));
+  }
 }
