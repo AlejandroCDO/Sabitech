@@ -4,7 +4,8 @@ export class Page {
 	}
 
 	static fromJSON(json, listKey, mapFn) {
-		const rawItems = Array.isArray(json[listKey]) ? json[listKey] : [];
+		const lista = Array.isArray(json) ? json : json[listKey];
+		const rawItems = Array.isArray(lista) ? lista : [];
 		return rawItems.map(mapFn);
 	}
 }
