@@ -39,7 +39,7 @@ function validar(datos) {
   return errores;
 }
 
-export function RegisterView({ onRegistrado, onIrALogin }) {
+export function RegisterView({ onRegistrado, onIrALogin, onIrAInicio }) {
   const [datos, setDatos] = useState(FORMULARIO_INICIAL);
   const [errores, setErrores] = useState({});
   const [errorGeneral, setErrorGeneral] = useState("");
@@ -77,7 +77,7 @@ export function RegisterView({ onRegistrado, onIrALogin }) {
   }
 
   return (
-    <AuthLayout>
+    <AuthLayout onIrAInicio={onIrAInicio}>
       <p className="auth-eyebrow">TU ESPACIO SABITECH</p>
       <h1 className="auth-titulo">Crea tu cuenta</h1>
       <p className="auth-subtitulo">Regístrate para reservar tus charlas y preparar tu próxima experiencia SABITECH.</p>

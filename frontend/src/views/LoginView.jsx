@@ -6,7 +6,12 @@ import { FormField } from "../components/FormField";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export function LoginView({ onLogin, onIrARegistro, mensajeExito }) {
+export function LoginView({
+  onLogin,
+  onIrARegistro,
+  onIrAInicio,
+  mensajeExito,
+}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [recordarme, setRecordarme] = useState(false);
@@ -16,8 +21,15 @@ export function LoginView({ onLogin, onIrARegistro, mensajeExito }) {
   const [cargando, setCargando] = useState(false);
 
   const emailValido = EMAIL_REGEX.test(email);
-  const errorEmail = errores.email ?? (emailTocado && !emailValido ? "Introduce un correo electrónico válido." : "");
-  const exitoEmail = emailTocado && emailValido && !errores.email ? "El formato del correo electrónico es correcto." : "";
+  const errorEmail =
+    errores.email ??
+    (emailTocado && !emailValido
+      ? "Introduce un correo electrónico válido."
+      : "");
+  const exitoEmail =
+    emailTocado && emailValido && !errores.email
+      ? "El formato del correo electrónico es correcto."
+      : "";
 
   async function iniciarSesion(event) {
     event.preventDefault();
@@ -39,20 +51,35 @@ export function LoginView({ onLogin, onIrARegistro, mensajeExito }) {
       onLogin();
     } catch (error) {
       setErrores(error.erroresPorCampo ?? {});
-      setErrorGeneral(error.erroresPorCampo ? "" : error.message || "No se ha podido iniciar sesión.");
+      setErrorGeneral(
+        error.erroresPorCampo
+          ? ""
+          : error.message || "No se ha podido iniciar sesión.",
+      );
     } finally {
       setCargando(false);
     }
   }
 
   return (
-    <AuthLayout>
+    <AuthLayout onIrAInicio={onIrAInicio}>
       <p className="auth-eyebrow">TU ESPACIO SABITECH</p>
       <h1 className="auth-titulo">Bienvenido de nuevo</h1>
-      <p className="auth-subtitulo">Accede para gestionar tus reservas y preparar tu próxima experiencia SABITECH.</p>
+      <p className="auth-subtitulo">
+        Accede para gestionar tus reservas y preparar tu próxima experiencia
+        SABITECH.
+      </p>
 
-      {mensajeExito && <p className="auth-aviso exito" role="status">{mensajeExito}</p>}
-      {errorGeneral && <p className="auth-aviso error" role="alert">{errorGeneral}</p>}
+      {mensajeExito && (
+        <p className="auth-aviso exito" role="status">
+          {mensajeExito}
+        </p>
+      )}
+      {errorGeneral && (
+        <p className="auth-aviso error" role="alert">
+          {errorGeneral}
+        </p>
+      )}
 
       <form className="auth-form" onSubmit={iniciarSesion} noValidate>
         <FormField
@@ -80,10 +107,16 @@ export function LoginView({ onLogin, onIrARegistro, mensajeExito }) {
 
         <div className="auth-opciones">
           <label className="auth-check">
-            <input type="checkbox" checked={recordarme} onChange={(e) => setRecordarme(e.target.checked)} />
+            <input
+              type="checkbox"
+              checked={recordarme}
+              onChange={(e) => setRecordarme(e.target.checked)}
+            />
             Recordarme
           </label>
-          <a className="auth-enlace" href="#">¿Has olvidado tu contraseña?</a>
+          <a className="auth-enlace" href="#">
+            ¿Has olvidado tu contraseña?
+          </a>
         </div>
 
         <button className="auth-boton" type="submit" disabled={cargando}>
@@ -96,7 +129,11 @@ export function LoginView({ onLogin, onIrARegistro, mensajeExito }) {
 
       <p className="auth-cambio">
         ¿No tienes cuenta?{" "}
-        <button type="button" className="auth-cambio-boton" onClick={onIrARegistro}>
+        <button
+          type="button"
+          className="auth-cambio-boton"
+          onClick={onIrARegistro}
+        >
           Regístrate
         </button>
       </p>

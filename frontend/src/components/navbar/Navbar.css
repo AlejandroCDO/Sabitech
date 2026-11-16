@@ -9,6 +9,7 @@
     justify-content: space-between;
     background-color: #263445;
     position: relative;
+    z-index: 20;
 }
 
 /* LOGOTIPO */
@@ -22,14 +23,14 @@
 }
 
 .logo-container {
-    width: 38px;
-    height: 38px;
+    width: 42px;
+    height: 42px;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: #F4F6F9;
     border-radius: 8px;
-    padding: 6px;
+    padding: 4px;
 }
 
 .logo-img {
@@ -65,18 +66,20 @@
     color: #00BFA6;
 }
 
-/* BOTÓN MIS RESERVAS */
+/* BOTÓN DE ACCESO Y MIS RESERVAS */
 .navbar-reservas {
     display: flex;
     align-items: center;
     gap: 10px;
     padding: 11px 17px;
+    border: none;
     border-radius: 8px;
     background-color: #00BFA6;
     color: #263445;
     text-decoration: none;
     font-size: 13px;
     font-weight: 600;
+    cursor: pointer;
     transition: background-color 0.2s ease;
 }
 
@@ -84,9 +87,41 @@
     background-color: #00a991;
 }
 
-.navbar-reservas svg {
-    width: 18px;
-    height: 18px;
+.acceso-flecha {
+    font-size: 9px;
+}
+
+/* DESPLEGABLE DE ACCESO */
+.navbar-acceso {
+    position: relative;
+}
+
+.acceso-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    min-width: 175px;
+    display: flex;
+    flex-direction: column;
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.18);
+    overflow: hidden;
+}
+
+.acceso-dropdown button {
+    padding: 13px 15px;
+    border: none;
+    background-color: #FFFFFF;
+    color: #263445;
+    text-align: left;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.acceso-dropdown button:hover {
+    background-color: #F4F6F9;
+    color: #00a991;
 }
 
 /* BOTÓN MENÚ MÓVIL */
@@ -106,8 +141,33 @@
     background-color: #F4F7FA;
 }
 
-/* DISEÑO RESPONSIVE */
+/* BOTÓN VOLVER AL INICIO EN LOGIN Y REGISTRO */
+.navbar-volver {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border: none;
+    background: transparent;
+    color: #F4F7FA;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.navbar-volver span {
+    font-size: 22px;
+}
+
+.navbar-volver:hover {
+    color: #00BFA6;
+}
+
+
+/* TABLETS Y MÓVILES */
 @media (max-width: 768px) {
+
     .navbar {
         min-height: 68px;
         padding: 0 5%;
@@ -129,15 +189,19 @@
         flex-direction: column;
         align-items: center;
         gap: 22px;
-        z-index: 10;
     }
 
     .navbar-links.open {
         display: flex;
     }
 
+    .navbar-acceso,
     .navbar-reservas {
         margin-left: auto;
         margin-right: 15px;
+    }
+
+    .acceso-dropdown {
+        z-index: 30;
     }
 }

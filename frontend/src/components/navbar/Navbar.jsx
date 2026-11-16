@@ -1,18 +1,42 @@
+
 import { useState } from "react";
 import "./Navbar.css";
 import logo from "../../assets/icons/banner.ico";
 
-function Navbar() {
+function Navbar({
+  logeado,
+  onIrAInicio,
+  onIrALogin,
+  onIrARegistro,
+  modoAuth = false,
+}) {
   const [menuAbierto, setMenuAbierto] = useState(false);
+  const [accesoAbierto, setAccesoAbierto] = useState(false);
 
-  const cerrarMenu = () => {
+  function cerrarMenus() {
     setMenuAbierto(false);
-  };
+    setAccesoAbierto(false);
+  }
+
+  function irAInicio() {
+    cerrarMenus();
+    onIrAInicio();
+  }
+
+  function irALogin() {
+    cerrarMenus();
+    onIrALogin();
+  }
+
+  function irARegistro() {
+    cerrarMenus();
+    onIrARegistro();
+  }
 
   return (
     <header className="navbar">
       {/* LOGOTIPO */}
-      <a href="#inicio" className="navbar-logo" onClick={cerrarMenu}>
+      <a href="#inicio" className="navbar-logo" onClick={irAInicio}>
         <span className="logo-container">
           <img src={logo} alt="Logotipo SABITECH" className="logo-img" />
         </span>
@@ -20,54 +44,86 @@ function Navbar() {
         <span className="logo-text">SABITECH</span>
       </a>
 
-      {/* BOTÓN MENÚ MÓVIL */}
-      <button
-        className="menu-toggle"
-        onClick={() => setMenuAbierto(!menuAbierto)}
-        aria-label="Abrir menú"
-        aria-expanded={menuAbierto}
-      >
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-
-      {/* NAVEGACIÓN */}
-      <nav className={`navbar-links ${menuAbierto ? "open" : ""}`}>
-        <a href="#inicio" className="active" onClick={cerrarMenu}>
-          Inicio
-        </a>
-
-        <a href="#charlas" onClick={cerrarMenu}>
-          Charlas
-        </a>
-
-        <a href="#ponentes" onClick={cerrarMenu}>
-          Ponentes
-        </a>
-
-        <a href="#comunidad" onClick={cerrarMenu}>
-          La comunidad
-        </a>
-      </nav>
-
-      {/* MIS RESERVAS */}
-      <a href="#reservas" className="navbar-reservas" onClick={cerrarMenu}>
-        Mis reservas
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+      {/* MENÚ MÓVIL: SOLO EN LA PÁGINA PRINCIPAL */}
+      {!modoAuth && (
+        <button
+          className="menu-toggle"
+          onClick={() => setMenuAbierto(!menuAbierto)}
+          aria-label="Abrir menú"
+          aria-expanded={menuAbierto}
         >
-          <path d="M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V7Z" />
-          <path d="M13 5v2" />
-          <path d="M13 11v2" />
-          <path d="M13 17v2" />
-        </svg>
-      </a>
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      )}
+
+      {/* NAVEGACIÓN: SOLO EN LA PÁGINA PRINCIPAL */}
+      {!modoAuth && (
+        <nav className={`navbar-links ${menuAbierto ? "open" : ""}`}>
+          <a href="#inicio" className="active" onClick={irAInicio}>
+            Inicio
+          </a>
+
+          <a href="#charlas" onClick={irAInicio}>
+            Charlas
+          </a>
+
+          <a href="#ponentes" onClick={irAInicio}>
+            Ponentes
+          </a>
+
+          <a href="#comunidad" onClick={irAInicio}>
+            La comunidad
+          </a>
+        </nav>
+      )}
+
+      {/* BOTÓN DE LA DERECHA */}
+      {modoAuth ? (
+        <button
+          type="button"
+          className="navbar-volver"
+          onClick={irAInicio}
+        >
+          <span aria-hidden="true">←</span>
+          Volver al inicio
+        </button>
+      ) : logeado ? (
+        <a
+          href="#reservas"
+          className="navbar-reservas"
+          onClick={cerrarMenus}
+        >
+          Mis reservas
+        </a>
+      ) : (
+        <div className="navbar-acceso">
+          <button
+            className="navbar-reservas"
+            type="button"
+            onClick={() => setAccesoAbierto(!accesoAbierto)}
+            aria-expanded={accesoAbierto}
+          >
+            Acceder
+            <span className="acceso-flecha">
+              {accesoAbierto ? "▲" : "▼"}
+            </span>
+          </button>
+
+          {accesoAbierto && (
+            <div className="acceso-dropdown">
+              <button type="button" onClick={irALogin}>
+                Iniciar sesión
+              </button>
+
+              <button type="button" onClick={irARegistro}>
+                Registrarse
+              </button>
+            </div>
+          )}
+        </div>
+      )}
     </header>
   );
 }

@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import "./App.css";
 import { MainView } from "./views/MainView";
@@ -9,7 +10,7 @@ import { Footer } from "./components/footer/Footer";
 
 function App() {
   const [logeado, setLogeado] = useState(false);
-  const [vista, setVista] = useState("login");
+  const [vista, setVista] = useState("inicio");
   const [mensajeRegistro, setMensajeRegistro] = useState("");
 
   useEffect(() => {
@@ -19,14 +20,26 @@ function App() {
   async function comprobarSesionIniciada() {
     const token =
       localStorage.getItem("token") ?? sessionStorage.getItem("token");
+
     if (token) {
       try {
         const user = await getUser(token);
         console.log(user);
+
         setLogeado(true);
+        setVista("inicio");
       } catch (error) {
         console.log(error);
+
+        localStorage.removeItem("token");
+        sessionStorage.removeItem("token");
+
+        setLogeado(false);
+        setVista("inicio");
       }
+    } else {
+      setLogeado(false);
+      setVista("inicio");
     }
   }
 
@@ -40,39 +53,43 @@ function App() {
     setVista("login");
   }
 
-  if (logeado) {
-    return <MainView></MainView>;
-  }
-
-  if (vista === "registro") {
-    return (
-      <RegisterView
-        onRegistrado={terminarRegistro}
-        onIrALogin={() => setVista("login")}
-      ></RegisterView>
-    );
+  function irAInicio() {
+    setVista("inicio");
   }
 
   return (
     <>
-      <Navbar />
+      {vista === "inicio" && (
+        <>
+          <Navbar
+            logeado={logeado}
+            onIrAInicio={irAInicio}
+            onIrALogin={() => setVista("login")}
+            onIrARegistro={irARegistro}
+          />
 
-      {logeado ? (
-        <MainView />
-      ) : vista === "registro" ? (
-        <RegisterView
-          onRegistrado={terminarRegistro}
-          onIrALogin={() => setVista("login")}
-        />
-      ) : (
+          <MainView />
+
+          <Footer />
+        </>
+      )}
+
+      {vista === "login" && (
         <LoginView
           onLogin={comprobarSesionIniciada}
           onIrARegistro={irARegistro}
+          onIrAInicio={irAInicio}
           mensajeExito={mensajeRegistro}
         />
       )}
 
-      <Footer />
+      {vista === "registro" && (
+        <RegisterView
+          onRegistrado={terminarRegistro}
+          onIrALogin={() => setVista("login")}
+          onIrAInicio={irAInicio}
+        />
+      )}
     </>
   );
 }
