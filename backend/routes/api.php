@@ -18,6 +18,7 @@ Route::middleware('token')->group(function () {
     Route::get('/usuario', [UsuarioController::class, 'getUsuario']);
     Route::post('/logout', [UsuarioController::class, 'logout']);
 
+    Route::get('/reservas', [ReservaController::class, 'listarMisReservas']);
     Route::post('/reservas', [ReservaController::class, 'crearReserva']);
     Route::patch('/reservas/{id}/cancelar', [ReservaController::class, 'cancelarReserva'])->whereNumber('id');
 });

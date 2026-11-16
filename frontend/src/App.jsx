@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import "./App.css";
 import { MainView } from "./views/MainView";
 import { CharlasView } from "./views/charlas/CharlasView";
 import { LoginView } from "./views/LoginView";
 import { RegisterView } from "./views/RegisterView";
+import { MisReservasView } from "./views/MisReservasView";
 import { getUser } from "./api/usersApi";
 import Navbar from "./components/navbar/Navbar";
 import { Footer } from "./components/footer/Footer";
@@ -65,9 +66,25 @@ function App() {
   });
 }
 
+  function irAReservas() {
+    setVista(logeado ? "reservas" : "login");
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
+  const cerrarSesionCaducada = useCallback(() => {
+    localStorage.removeItem("token");
+    sessionStorage.removeItem("token");
+
+    setLogeado(false);
+    setVista("login");
+  }, []);
+
   return (
     <>
-      {(vista === "inicio" || vista === "charlas") && (
+      {(vista === "inicio" || vista === "charlas" || vista === "reservas") && (
         <>
           <Navbar
             logeado={logeado}
@@ -76,6 +93,7 @@ function App() {
             onIrACharlas={irACharlas}
             onIrALogin={() => setVista("login")}
             onIrARegistro={irARegistro}
+            onIrAReservas={irAReservas}
           />
 
           {vista === "inicio" && (
@@ -84,6 +102,14 @@ function App() {
 
           {vista === "charlas" && (
             <CharlasView />
+          )}
+
+          {vista === "reservas" && (
+            <MisReservasView
+              onIrAInicio={irAInicio}
+              onIrACharlas={irACharlas}
+              onSesionCaducada={cerrarSesionCaducada}
+            />
           )}
 
           <Footer />

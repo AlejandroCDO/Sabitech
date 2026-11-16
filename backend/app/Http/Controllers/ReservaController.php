@@ -8,6 +8,39 @@ use Illuminate\Support\Str;
 
 class ReservaController extends Controller
 {
+    public function listarMisReservas(Request $request)
+    {
+        $usuario = $request->attributes->get('usuario');
+
+        $reservas = DB::table('reservas')
+            ->join('charlas', 'reservas.charla_id', '=', 'charlas.id')
+            ->join('ponentes', 'charlas.ponente_id', '=', 'ponentes.id')
+            ->join('ubicaciones', 'charlas.ubicacion_id', '=', 'ubicaciones.id')
+            ->where('reservas.usuario_id', $usuario->id)
+            ->where('reservas.estado', '!=', 'cancelada')
+            ->select(
+                'reservas.id',
+                'reservas.estado',
+                'reservas.created_at',
+
+                'charlas.id as charla_id',
+                'charlas.titulo',
+                'charlas.foto_url',
+                'charlas.inicio',
+                'charlas.fin',
+                'charlas.cancelada',
+
+                'ponentes.nombre as ponente_nombre',
+
+                'ubicaciones.nombre as ubicacion_nombre',
+                'ubicaciones.municipio'
+            )
+            ->orderBy('charlas.inicio', 'asc')
+            ->get();
+
+        return response()->json($reservas);
+    }
+
     // 1. Crear una reserva
     public function crearReserva(Request $request)
     {

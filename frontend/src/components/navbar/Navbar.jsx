@@ -8,6 +8,7 @@ function Navbar({
   onIrACharlas,
   onIrALogin,
   onIrARegistro,
+  onIrAReservas,
   vistaActiva = "inicio",
   modoAuth = false,
 }) {
@@ -37,6 +38,11 @@ function Navbar({
   function irARegistro() {
     cerrarMenus();
     onIrARegistro();
+  }
+
+  function irAReservas() {
+    cerrarMenus();
+    onIrAReservas();
   }
 
   return (
@@ -107,7 +113,7 @@ function Navbar({
         <a
           href="#reservas"
           className="navbar-reservas"
-          onClick={cerrarMenus}
+          onClick={irAReservas}
         >
           Mis reservas
         </a>
