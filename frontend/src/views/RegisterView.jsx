@@ -15,6 +15,16 @@ const FORMULARIO_INICIAL = {
   confirmar_password: "",
 };
 
+const EDAD_MINIMA = 16;
+
+function fechaMaximaNacimiento() {
+  const fecha = new Date();
+  fecha.setFullYear(fecha.getFullYear() - EDAD_MINIMA);
+  const mes = String(fecha.getMonth() + 1).padStart(2, "0");
+  const dia = String(fecha.getDate()).padStart(2, "0");
+  return `${fecha.getFullYear()}-${mes}-${dia}`;
+}
+
 function validar(datos) {
   const errores = {};
   if (!datos.nombre.trim()) {
@@ -28,6 +38,8 @@ function validar(datos) {
   }
   if (!datos.fecha_nacimiento) {
     errores.fecha_nacimiento = "Introduce tu fecha de nacimiento.";
+  } else if (datos.fecha_nacimiento > fechaMaximaNacimiento()) {
+    errores.fecha_nacimiento = `Debes tener al menos ${EDAD_MINIMA} años para registrarte.`;
   }
   if (datos.password.length < 8) {
     errores.password = "La contraseña debe tener al menos 8 caracteres.";
@@ -121,6 +133,7 @@ export function RegisterView({ onRegistrado, onIrALogin, onIrAInicio }) {
             label="Fecha de nacimiento"
             type="date"
             autoComplete="bday"
+            max={fechaMaximaNacimiento()}
             value={datos.fecha_nacimiento}
             onChange={actualizarCampo}
             error={errores.fecha_nacimiento}
