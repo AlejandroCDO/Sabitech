@@ -1,18 +1,25 @@
 import { Charla } from "../models/charla.js";
 import { ApiError } from "./ApiError.js";
-import { Page } from "../models/page.js";
 
-const API_BASE_URL = "http://localhost:8080/api";
+const API_BASE_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8080/api";
 const CHARLAS_URL = `${API_BASE_URL}/charlas`;
 
 export async function list() {
-  const response = await fetch(`${CHARLAS_URL}`);
-  const json = await response.json();
-  if (!response.ok) {
-    throw new ApiError(response.status, json.message);
+  let response;
+  let json;
+  try {
+    response = await fetch(CHARLAS_URL, {
+      headers: { Accept: "application/json" },
+    });
+    json = await response.json();
+  } catch {
+    throw new ApiError(0, "No se ha podido conectar con el servidor.");
   }
 
-  const charlas = Page.fromJSON(json, "data", Charla.fromJSON);
+  if (!response.ok) {
+    throw new ApiError(response.status, json.mensaje ?? json.message);
+  }
 
-  return charlas;
+  const charlas = Array.isArray(json) ? json : json.data ?? [];
+  return charlas.map(Charla.fromJSON);
 }
