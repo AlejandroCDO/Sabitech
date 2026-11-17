@@ -56,3 +56,28 @@ export async function crearReserva(charlaId) {
 
   return json;
 }
+
+export async function cancelarReserva(reservaId) {
+  const token = localStorage.getItem("token") ?? sessionStorage.getItem("token");
+
+  let response;
+  let json;
+  try {
+    response = await fetch(`${API_BASE_URL}/reservas/${reservaId}/cancelar`, {
+      method: "PATCH",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    json = await response.json();
+  } catch {
+    throw new ApiError(0, "No se ha podido conectar con el servidor.");
+  }
+
+  if (!response.ok) {
+    throw new ApiError(response.status, json.mensaje ?? json.message, json);
+  }
+
+  return json;
+}

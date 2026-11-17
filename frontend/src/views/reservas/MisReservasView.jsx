@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./MisReservasView.css";
-import { listarMisReservas } from "../../api/reservasApi";
+import { cancelarReserva, listarMisReservas } from "../../api/reservasApi";
+import { ModalConfirmacion } from "../../components/reservas/ModalConfirmacion";
 
 const ICONOS = {
   calendario: (
@@ -92,9 +93,10 @@ function textoResumen(reservas) {
   return partes.join(" · ");
 }
 
-function TarjetaReserva({ reserva, onVerDetalle }) {
+function TarjetaReserva({ reserva, onVerDetalle, onCancelar }) {
   const [imagenFallida, setImagenFallida] = useState(false);
   const cancelada = charlaCancelada(reserva);
+  const puedeCancelar = !cancelada && aFecha(reserva.inicio) > new Date();
   const estado = ESTADOS[reserva.estado] ?? ESTADOS.pendiente;
 
   function alPulsarTecla(evento) {
@@ -160,6 +162,12 @@ function TarjetaReserva({ reserva, onVerDetalle }) {
             Ver QR
           </button>
         )}
+
+        {puedeCancelar && (
+          <button className="reserva-boton-cancelar" type="button" onClick={() => onCancelar(reserva)}>
+            Cancelar reserva
+          </button>
+        )}
       </div>
     </article>
   );
@@ -169,6 +177,19 @@ export function MisReservasView({ onIrAInicio, onIrACharlas, onVerDetalle, onSes
   const [reservas, setReservas] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState("");
+  const [reservaACancelar, setReservaACancelar] = useState(null);
+  const [cancelando, setCancelando] = useState(false);
+  const [errorCancelar, setErrorCancelar] = useState("");
+  const [aviso, setAviso] = useState("");
+
+  useEffect(() => {
+    if (!aviso) {
+      return undefined;
+    }
+
+    const temporizador = setTimeout(() => setAviso(""), 6000);
+    return () => clearTimeout(temporizador);
+  }, [aviso]);
 
   useEffect(() => {
     let activo = true;
@@ -221,6 +242,36 @@ export function MisReservasView({ onIrAInicio, onIrACharlas, onVerDetalle, onSes
     recargarReservas();
   }
 
+  function pedirCancelacion(reserva) {
+    setErrorCancelar("");
+    setReservaACancelar(reserva);
+  }
+
+  function cerrarModal() {
+    setReservaACancelar(null);
+    setErrorCancelar("");
+  }
+
+  async function confirmarCancelacion() {
+    setCancelando(true);
+    setErrorCancelar("");
+
+    try {
+      await cancelarReserva(reservaACancelar.id);
+      setReservas((actuales) => actuales.filter((reserva) => reserva.id !== reservaACancelar.id));
+      setReservaACancelar(null);
+      setAviso("Reserva cancelada. Tu plaza ha quedado libre.");
+    } catch (errorCancelacion) {
+      if (errorCancelacion.isUnauthorized) {
+        onSesionCaducada();
+        return;
+      }
+      setErrorCancelar(errorCancelacion.message || "No se ha podido cancelar la reserva.");
+    } finally {
+      setCancelando(false);
+    }
+  }
+
   return (
     <div className="reservas-pagina">
       <div className="reservas-contenedor">
@@ -237,6 +288,12 @@ export function MisReservasView({ onIrAInicio, onIrACharlas, onVerDetalle, onSes
         <p className="reservas-subtitulo">
           Tu próxima experiencia, en un solo lugar. Consulta tus charlas y accede a tu QR de entrada.
         </p>
+
+        {aviso && (
+          <p className="reservas-aviso" role="status">
+            {aviso}
+          </p>
+        )}
 
         {cargando && (
           <p className="reservas-estado" role="status">
@@ -275,12 +332,30 @@ export function MisReservasView({ onIrAInicio, onIrACharlas, onVerDetalle, onSes
 
             <div className="reservas-lista">
               {reservas.map((reserva) => (
-                <TarjetaReserva key={reserva.id} reserva={reserva} onVerDetalle={onVerDetalle} />
+                <TarjetaReserva
+                  key={reserva.id}
+                  reserva={reserva}
+                  onVerDetalle={onVerDetalle}
+                  onCancelar={pedirCancelacion}
+                />
               ))}
             </div>
           </>
         )}
       </div>
+
+      {reservaACancelar && (
+        <ModalConfirmacion
+          titulo="¿Cancelar la reserva?"
+          mensaje={`Vas a cancelar tu plaza en "${reservaACancelar.titulo}". La plaza quedará libre para otras personas.`}
+          textoConfirmar="Sí, cancelar reserva"
+          textoCancelar="Volver"
+          cargando={cancelando}
+          error={errorCancelar}
+          onConfirmar={confirmarCancelacion}
+          onCancelar={cerrarModal}
+        />
+      )}
     </div>
   );
 }

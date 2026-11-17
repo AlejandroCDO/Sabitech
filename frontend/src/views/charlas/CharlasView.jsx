@@ -5,6 +5,7 @@ import "../home/MainView.css";
 import heroImage from "../../assets/hero-sabitech.jpg";
 import { list } from "../../api/charlasApi";
 import { crearReserva } from "../../api/reservasApi";
+import { useCharlasReservadas } from "../../hooks/useCharlasReservadas";
 import { CharlaDetalleView } from "./CharlaDetalleView";
 import { PlazaConfirmadaView } from "./PlazaConfirmadaView";
 
@@ -115,7 +116,7 @@ function obtenerTextoBusqueda(charla) {
     .toLowerCase();
 }
 
-export function CharlasView({ onDetalleChange }) {
+export function CharlasView({ logeado, onDetalleChange }) {
   const [charlas, setCharlas] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState("");
@@ -127,6 +128,7 @@ export function CharlasView({ onDetalleChange }) {
   const [reservandoId, setReservandoId] = useState(null);
   const [errorDetalle, setErrorDetalle] = useState("");
   const [aviso, setAviso] = useState(null);
+  const { charlasReservadas, recargarReservadas } = useCharlasReservadas(logeado);
 
   useEffect(() => {
     onDetalleChange?.(pagina !== "lista");
@@ -228,7 +230,7 @@ export function CharlasView({ onDetalleChange }) {
 
       window.scrollTo({ top: 0, behavior: "smooth" });
 
-      await cargarCharlas();
+      await Promise.all([cargarCharlas(), recargarReservadas()]);
     } catch (errorReserva) {
       const texto =
         errorReserva.message || "No se ha podido realizar la reserva.";
@@ -266,6 +268,7 @@ export function CharlasView({ onDetalleChange }) {
       <CharlaDetalleView
         charla={charlaSeleccionada}
         reservando={reservandoId === charlaSeleccionada.id}
+        reservada={charlasReservadas.has(charlaSeleccionada.id)}
         error={errorDetalle}
         onVolver={volverAlPrograma}
         onReservar={() => reservar(charlaSeleccionada)}
@@ -443,6 +446,7 @@ export function CharlasView({ onDetalleChange }) {
             {charlasFiltradas.map((charla) => {
               const fecha = diaMes(charla.inicio);
               const empezada = aFecha(charla.inicio) <= ahora;
+              const reservada = charlasReservadas.has(charla.id);
               const deshabilitada =
                 charla.cancelada || charla.completa || empezada;
 
@@ -539,23 +543,27 @@ export function CharlasView({ onDetalleChange }) {
                       </button>
 
                       <button
-                        className="home-boton home-boton--principal home-boton-reserva"
+                        className={`home-boton home-boton--principal home-boton-reserva ${
+                          reservada ? "home-boton-reservada" : ""
+                        }`}
                         type="button"
                         disabled={
-                          deshabilitada || reservandoId === charla.id
+                          reservada || deshabilitada || reservandoId === charla.id
                         }
                         onClick={() => reservar(charla)}
                       >
                         {reservandoId === charla.id
                           ? "Reservando..."
-                          : charla.cancelada
+                          : reservada
+                            ? "Plaza reservada"
+                            : charla.cancelada
                             ? "Cancelada"
                             : empezada
                               ? "Finalizada"
                               : charla.completa
                                 ? "Sin plazas"
                                 : "Reservar plaza"}
-                        {!deshabilitada && <Icono nombre="entrada" />}
+                        {!deshabilitada && !reservada && <Icono nombre="entrada" />}
                       </button>
                     </div>
                   </div>

@@ -162,6 +162,7 @@ function App() {
           {vista === "inicio" && (
             <MainView
               key={claveVista}
+              logeado={logeado}
               onIrACharlas={irACharlas}
               onDetalleChange={setDetalleAbierto}
             />
@@ -170,6 +171,7 @@ function App() {
           {vista === "charlas" && (
             <CharlasView
               key={claveVista}
+              logeado={logeado}
               onDetalleChange={setDetalleAbierto}
             />
           )}

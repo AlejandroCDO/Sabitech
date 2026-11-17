@@ -644,6 +644,13 @@
   transform: none;
 }
 
+.home-boton-reserva.home-boton-reservada:disabled {
+  border: 1px solid var(--turquesa);
+  background: #e6f7f4;
+  color: #006b5b;
+  cursor: default;
+}
+
 .home-estado {
   display: flex;
   flex-direction: column;

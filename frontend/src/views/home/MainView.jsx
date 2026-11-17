@@ -4,6 +4,7 @@ import heroImage from "../../assets/hero-sabitech.jpg";
 import comunidadImage from "../../assets/comunidad-sabitech.jpg";
 import { list } from "../../api/charlasApi";
 import { crearReserva } from "../../api/reservasApi";
+import { useCharlasReservadas } from "../../hooks/useCharlasReservadas";
 import { CharlaDetalleView } from "../charlas/CharlaDetalleView";
 import { PlazaConfirmadaView } from "../charlas/PlazaConfirmadaView";
 
@@ -153,7 +154,7 @@ function claveDia(valor) {
   return `${fecha.getFullYear()}-${fecha.getMonth()}-${fecha.getDate()}`;
 }
 
-export function MainView({ onIrACharlas, onDetalleChange }) {
+export function MainView({ logeado, onIrACharlas, onDetalleChange }) {
   const [charlas, setCharlas] = useState([]);
   const [diaActivo, setDiaActivo] = useState("");
   const [cargando, setCargando] = useState(true);
@@ -164,6 +165,7 @@ export function MainView({ onIrACharlas, onDetalleChange }) {
   const [charlaSeleccionada, setCharlaSeleccionada] = useState(null);
   const [errorDetalle, setErrorDetalle] = useState("");
   const contenedorRef = useRef(null);
+  const { charlasReservadas, recargarReservadas } = useCharlasReservadas(logeado);
 
   useEffect(() => {
     onDetalleChange?.(pagina !== "lista");
@@ -272,7 +274,7 @@ export function MainView({ onIrACharlas, onDetalleChange }) {
       setCharlaSeleccionada(charla);
       setPagina("confirmada");
       window.scrollTo({ top: 0, behavior: "smooth" });
-      await cargarCharlas();
+      await Promise.all([cargarCharlas(), recargarReservadas()]);
     } catch (errorReserva) {
       const texto =
         errorReserva.message || "No se ha podido realizar la reserva.";
@@ -307,6 +309,7 @@ export function MainView({ onIrACharlas, onDetalleChange }) {
       <CharlaDetalleView
         charla={charlaSeleccionada}
         reservando={reservandoId === charlaSeleccionada.id}
+        reservada={charlasReservadas.has(charlaSeleccionada.id)}
         error={errorDetalle}
         onVolver={volverAlPrograma}
         onReservar={() => reservar(charlaSeleccionada)}
@@ -567,15 +570,21 @@ export function MainView({ onIrACharlas, onDetalleChange }) {
                             <Icono nombre="externo" />
                           </button>
                           <button
-                            className="home-boton home-boton--principal home-boton-reserva"
+                            className={`home-boton home-boton--principal home-boton-reserva ${
+                              charlasReservadas.has(charla.id) ? "home-boton-reservada" : ""
+                            }`}
                             type="button"
                             disabled={
-                              charla.completa || reservandoId === charla.id
+                              charlasReservadas.has(charla.id) ||
+                              charla.completa ||
+                              reservandoId === charla.id
                             }
                             onClick={() => reservar(charla)}
                           >
                             {reservandoId === charla.id ? (
                               "Reservando..."
+                            ) : charlasReservadas.has(charla.id) ? (
+                              "Plaza reservada"
                             ) : charla.completa ? (
                               "Sin plazas"
                             ) : (
