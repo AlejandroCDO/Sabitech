@@ -1,4 +1,4 @@
-import { list } from "../api/charlasApi";
+import { list } from "../../api/charlasApi";
 
 export function ListarCharlasButton() {
   async function listarCharlas() {

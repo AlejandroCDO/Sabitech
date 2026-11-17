@@ -1,8 +1,8 @@
 import { useState } from "react";
 import "./AuthView.css";
-import { login } from "../api/authApi";
-import { AuthLayout } from "../components/AuthLayout";
-import { FormField } from "../components/FormField";
+import { login } from "../../api/authApi";
+import { AuthLayout } from "../../components/auth/AuthLayout";
+import { FormField } from "../../components/auth/FormField";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

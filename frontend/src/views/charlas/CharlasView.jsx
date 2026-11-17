@@ -1,12 +1,12 @@
 
 import { useEffect, useState } from "react";
 import "./CharlasView.css";
-import "../MainView.css";
+import "../home/MainView.css";
 import heroImage from "../../assets/hero-sabitech.jpg";
 import { list } from "../../api/charlasApi";
 import { crearReserva } from "../../api/reservasApi";
-import { CharlaDetalleView } from "../CharlaDetalleView";
-import { PlazaConfirmadaView } from "../PlazaConfirmadaView";
+import { CharlaDetalleView } from "./CharlaDetalleView";
+import { PlazaConfirmadaView } from "./PlazaConfirmadaView";
 
 const ICONOS = {
   calendario: (

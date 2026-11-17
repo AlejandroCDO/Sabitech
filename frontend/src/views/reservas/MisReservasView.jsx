@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./MisReservasView.css";
-import { listarMisReservas } from "../api/reservasApi";
+import { listarMisReservas } from "../../api/reservasApi";
 
 const ICONOS = {
   calendario: (

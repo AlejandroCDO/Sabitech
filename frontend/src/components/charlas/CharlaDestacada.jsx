@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { list } from "../api/charlasApi";
+import { list } from "../../api/charlasApi";
 
 function formatearFecha(fecha) {
   return new Date(fecha.replace(" ", "T")).toLocaleDateString("es-ES", {

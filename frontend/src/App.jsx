@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import "./App.css";
-import { MainView } from "./views/MainView";
+import { MainView } from "./views/home/MainView";
 import { CharlasView } from "./views/charlas/CharlasView";
-import { LoginView } from "./views/LoginView";
-import { RegisterView } from "./views/RegisterView";
-import { MisReservasView } from "./views/MisReservasView";
+import { LoginView } from "./views/auth/LoginView";
+import { RegisterView } from "./views/auth/RegisterView";
+import { MisReservasView } from "./views/reservas/MisReservasView";
 import { getUser } from "./api/usersApi";
 import Navbar from "./components/navbar/Navbar";
 import { Footer } from "./components/footer/Footer";

@@ -1,7 +1,7 @@
 
-import { CharlaDestacada } from "./CharlaDestacada";
-import Navbar from "./navbar/Navbar";
-import { Footer } from "./footer/Footer";
+import { CharlaDestacada } from "../charlas/CharlaDestacada";
+import Navbar from "../navbar/Navbar";
+import { Footer } from "../footer/Footer";
 
 export function AuthLayout({ children, onIrAInicio }) {
   return (

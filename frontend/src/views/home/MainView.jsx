@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./MainView.css";
-import heroImage from "../assets/hero-sabitech.jpg";
-import comunidadImage from "../assets/comunidad-sabitech.jpg";
-import { list } from "../api/charlasApi";
-import { crearReserva } from "../api/reservasApi";
-import { CharlaDetalleView } from "./CharlaDetalleView";
-import { PlazaConfirmadaView } from "./PlazaConfirmadaView";
+import heroImage from "../../assets/hero-sabitech.jpg";
+import comunidadImage from "../../assets/comunidad-sabitech.jpg";
+import { list } from "../../api/charlasApi";
+import { crearReserva } from "../../api/reservasApi";
+import { CharlaDetalleView } from "../charlas/CharlaDetalleView";
+import { PlazaConfirmadaView } from "../charlas/PlazaConfirmadaView";
 
 const VENTAJAS = [
   {

@@ -1,5 +1,5 @@
 import "./CharlaPages.css";
-import heroImage from "../assets/hero-sabitech.jpg";
+import heroImage from "../../assets/hero-sabitech.jpg";
 
 const ICONOS = {
   calendario: (
