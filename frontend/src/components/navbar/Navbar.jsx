@@ -1,19 +1,14 @@
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./Navbar.css";
 import logo from "../../assets/icons/banner.ico";
 import defaultAvatar from "../../assets/images/default.png";
 
 function FotoPerfil({ usuario, onIrAPerfil }) {
-  const [imagenError, setImagenError] = useState(false);
+  const [urlConError, setUrlConError] = useState(null);
 
   const fotoUrl = usuario?.foto_perfil_url;
-
-  useEffect(() => {
-    setImagenError(false);
-  }, [fotoUrl]);
-
-  const imagen = fotoUrl && !imagenError ? fotoUrl : defaultAvatar;
+  const imagen = fotoUrl && fotoUrl !== urlConError ? fotoUrl : defaultAvatar;
 
   return (
     <button
@@ -26,10 +21,10 @@ function FotoPerfil({ usuario, onIrAPerfil }) {
       <img
         src={imagen}
         alt=""
-        className={`navbar-avatar ${!fotoUrl || imagenError ? "navbar-avatar-default" : ""}`}
+        className={`navbar-avatar ${!fotoUrl || fotoUrl === urlConError ? "navbar-avatar-default" : ""}`}
         onError={(evento) => {
           if (evento.currentTarget.src !== defaultAvatar) {
-            setImagenError(true);
+            setUrlConError(fotoUrl);
           }
         }}
       />

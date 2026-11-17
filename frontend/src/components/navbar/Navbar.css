@@ -31,6 +31,11 @@
     background-color: #F4F6F9;
     border-radius: 8px;
     padding: 4px;
+    transition: transform 0.2s ease;
+}
+
+.navbar-logo:hover .logo-container {
+    transform: scale(1.05);
 }
 
 .logo-img {
@@ -54,6 +59,7 @@
 }
 
 .navbar-links a {
+    position: relative;
     color: #F4F7FA;
     text-decoration: none;
     font-size: 14px;
@@ -61,9 +67,27 @@
     transition: color 0.2s ease;
 }
 
+.navbar-links a::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: -6px;
+    left: 0;
+    height: 2px;
+    background-color: #00BFA6;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+}
+
 .navbar-links a:hover,
 .navbar-links a.active {
     color: #00BFA6;
+}
+
+.navbar-links a:hover::after,
+.navbar-links a.active::after {
+    transform: scaleX(1);
 }
 
 /* ACCIONES DE LA DERECHA */
@@ -87,11 +111,16 @@
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .navbar-reservas:hover {
     background-color: #00a991;
+    transform: translateY(-1px);
+}
+
+.navbar-reservas:active {
+    transform: scale(0.97);
 }
 
 .acceso-flecha {
@@ -143,6 +172,8 @@
     border-radius: 8px;
     box-shadow: 0 5px 18px rgba(0, 0, 0, 0.18);
     overflow: hidden;
+    transform-origin: top right;
+    animation: navbarDropdown 0.2s ease both;
 }
 
 .acceso-dropdown button {
@@ -166,6 +197,11 @@
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid #00BFA6;
+    transition: transform 0.25s ease;
+}
+
+.navbar-perfil:hover .navbar-avatar {
+    transform: scale(1.06);
 }
 
 /* BOTÓN MENÚ MÓVIL */
@@ -183,6 +219,19 @@
     height: 2px;
     margin: 5px 0;
     background-color: #F4F7FA;
+    transition: transform 0.25s ease, opacity 0.2s ease;
+}
+
+.menu-toggle[aria-expanded="true"] span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.menu-toggle[aria-expanded="true"] span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-toggle[aria-expanded="true"] span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
 }
 
 /* BOTÓN VOLVER AL INICIO EN LOGIN Y REGISTRO */
@@ -213,6 +262,28 @@
     cursor: pointer;
 }
 
+@keyframes navbarDropdown {
+    from {
+        opacity: 0;
+        transform: translateY(-6px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes navbarMenu {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* TABLETS Y MÓVILES */
 @media (max-width: 768px) {
     .navbar {
@@ -240,6 +311,7 @@
 
     .navbar-links.open {
         display: flex;
+        animation: navbarMenu 0.22s ease both;
     }
 
     .navbar-acceso,

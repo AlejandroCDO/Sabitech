@@ -124,6 +124,31 @@
   max-width: 1440px;
   margin: 0 auto;
   padding: 56px 80px;
+  animation: authEntrada 0.5s ease both;
+}
+
+.auth-panel > * {
+  animation: authEntrada 0.45s ease backwards;
+}
+
+.auth-panel > *:nth-child(2) {
+  animation-delay: 0.05s;
+}
+
+.auth-panel > *:nth-child(3) {
+  animation-delay: 0.1s;
+}
+
+.auth-panel > *:nth-child(4) {
+  animation-delay: 0.15s;
+}
+
+.auth-panel > *:nth-child(5) {
+  animation-delay: 0.2s;
+}
+
+.auth-panel > *:nth-child(6) {
+  animation-delay: 0.25s;
 }
 
 /* ==============================
@@ -153,6 +178,7 @@
       transparent 40%
     ),
     linear-gradient(160deg, #0b183d 0%, #101c2c 55%, #263444 100%);
+  animation: authHero 0.7s ease both;
 }
 
 .auth-hero::after {
@@ -175,6 +201,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  animation: authZoom 12s ease-out both;
 }
 
 .auth-hero-badge {
@@ -255,6 +282,7 @@
   padding: 12px 14px;
   border-radius: 8px;
   font-size: 13px;
+  animation: authMensaje 0.25s ease both;
 }
 
 .auth-aviso.exito {
@@ -305,6 +333,7 @@
   font: inherit;
   font-size: 14px;
   color: var(--azul);
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .campo input::placeholder {
@@ -314,6 +343,8 @@
 .campo input:focus {
   border-color: var(--azul);
   outline: none;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(0, 191, 165, 0.14);
 }
 
 .campo.error input {
@@ -343,6 +374,7 @@
   margin: 8px 0 0;
   font-size: 12px;
   color: var(--texto-suave);
+  animation: authMensaje 0.25s ease both;
 }
 
 .campo.error .campo-mensaje {
@@ -402,10 +434,24 @@
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-.auth-boton:hover {
+.auth-boton svg {
+  transition: transform 0.2s ease;
+}
+
+.auth-boton:hover:not(:disabled) {
   background: #00a990;
+  transform: translateY(-1px);
+}
+
+.auth-boton:hover:not(:disabled) svg {
+  transform: translateX(3px);
+}
+
+.auth-boton:active:not(:disabled) {
+  transform: scale(0.98);
 }
 
 .auth-boton:disabled {
@@ -458,6 +504,48 @@
 
 .auth-footer-enlaces a:hover {
   color: var(--turquesa);
+}
+
+@keyframes authEntrada {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes authHero {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes authZoom {
+  from {
+    transform: scale(1.06);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes authMensaje {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ==============================

@@ -33,6 +33,11 @@
     background-color: #F4F6F9;
     border-radius: 8px;
     padding: 3px;
+    transition: transform 0.2s ease;
+}
+
+.footer-logo:hover .footer-logo-container {
+    transform: scale(1.05);
 }
 
 .footer-logo-container img {
@@ -80,8 +85,14 @@
     text-decoration: none;
 }
 
+.footer-column a {
+    display: inline-block;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
 .footer-column a:hover {
     color: #00BFA6;
+    transform: translateX(3px);
 }
 
 /* PARTE INFERIOR */

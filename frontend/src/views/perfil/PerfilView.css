@@ -20,10 +20,12 @@
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
+    transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .perfil-volver:hover {
     color: #00A991;
+    transform: translateX(-3px);
 }
 
 .perfil-cabecera {
@@ -31,6 +33,7 @@
     align-items: center;
     gap: 24px;
     margin-bottom: 35px;
+    animation: perfilEntrada 0.5s ease both;
 }
 
 .perfil-avatar {
@@ -48,6 +51,11 @@
     height: 100%;
     display: block;
     object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.perfil-avatar:hover img {
+    transform: scale(1.06);
 }
 
 .perfil-etiqueta {
@@ -78,10 +86,20 @@
     border-radius: 12px;
     background-color: #FFFFFF;
     box-shadow: 0 4px 18px rgba(38, 52, 69, 0.06);
+    animation: perfilEntrada 0.5s 0.08s ease both;
 }
 
 .perfil-tarjeta {
     margin-bottom: 22px;
+    transition: box-shadow 0.25s ease;
+}
+
+.perfil-tarjeta:hover {
+    box-shadow: 0 10px 26px rgba(38, 52, 69, 0.09);
+}
+
+.perfil-sesion {
+    animation-delay: 0.16s;
 }
 
 .perfil-tarjeta-cabecera {
@@ -118,6 +136,14 @@
     padding-top: 25px;
 }
 
+.perfil-campo {
+    transition: transform 0.2s ease;
+}
+
+.perfil-campo:hover {
+    transform: translateX(3px);
+}
+
 .perfil-campo span {
     display: block;
     margin-bottom: 8px;
@@ -151,11 +177,27 @@
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .perfil-cerrar-sesion:hover {
     background-color: #BD3838;
+    transform: translateY(-1px);
+}
+
+.perfil-cerrar-sesion:active {
+    transform: scale(0.98);
+}
+
+@keyframes perfilEntrada {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @media (max-width: 650px) {
