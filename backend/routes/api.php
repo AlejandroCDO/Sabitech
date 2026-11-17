@@ -16,6 +16,7 @@ Route::post('/login', [UsuarioController::class, 'login']);
 Route::middleware('token')->group(function () {
     Route::get('/usuarios', [UsuarioController::class, 'getUsuarios']);
     Route::get('/usuario', [UsuarioController::class, 'getUsuario']);
+    Route::patch('/usuario/foto-perfil', [UsuarioController::class, 'actualizarFotoPerfil']);
     Route::post('/logout', [UsuarioController::class, 'logout']);
 
     Route::get('/reservas', [ReservaController::class, 'listarMisReservas']);

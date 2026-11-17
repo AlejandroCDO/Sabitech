@@ -20,6 +20,7 @@ class UsuarioController extends Controller
                 'usuarios.email',
                 'usuarios.telefono',
                 'usuarios.fecha_nacimiento',
+                'usuarios.foto_perfil_url',
                 'roles.nombre as rol'
             )
             ->orderBy('usuarios.id', 'asc')
@@ -42,6 +43,7 @@ public function getUsuario(Request $request)
             'usuarios.email',
             'usuarios.telefono',
             'usuarios.fecha_nacimiento',
+            'usuarios.foto_perfil_url',
             'roles.nombre as rol'
         )
         ->where('usuarios.id', $usuarioAutenticado->id)
@@ -59,7 +61,8 @@ public function getUsuario(Request $request)
             'email' => 'required|email|max:150|unique:usuarios,email',
             'telefono' => 'required|string|max:15',
             'fecha_nacimiento' => 'required|date|before_or_equal:' . now()->subYears(16)->toDateString(),
-            'password' => 'required|string|min:8'
+            'password' => 'required|string|min:8',
+            'foto_perfil_url' => 'nullable|url|max:2048'
         ], [
             'fecha_nacimiento.before_or_equal' => 'Debes tener al menos 16 años para registrarte.',
         ]);
@@ -86,7 +89,7 @@ public function getUsuario(Request $request)
         // 5. Recuperar el usuario creado (sin la contraseña)
         $usuario = DB::table('usuarios')
             ->where('id', $id)
-            ->select('id', 'nombre', 'email', 'telefono', 'fecha_nacimiento', 'rol_id')
+            ->select('id', 'nombre', 'email', 'telefono', 'fecha_nacimiento', 'foto_perfil_url', 'rol_id')
             ->first();
 
         // 6. Devolver la respuesta
@@ -137,8 +140,27 @@ public function getUsuario(Request $request)
                 'id' => $usuario->id,
                 'nombre' => $usuario->nombre,
                 'email' => $usuario->email,
+                'foto_perfil_url' => $usuario->foto_perfil_url,
                 'rol' => $rol
             ]
+        ], 200);
+    }
+
+    public function actualizarFotoPerfil(Request $request)
+    {
+        $datos = $request->validate([
+            'foto_perfil_url' => 'nullable|url|max:2048'
+        ]);
+
+        $usuario = $request->attributes->get('usuario');
+
+        DB::table('usuarios')
+            ->where('id', $usuario->id)
+            ->update(['foto_perfil_url' => $datos['foto_perfil_url'] ?? null]);
+
+        return response()->json([
+            'mensaje' => 'Foto de perfil actualizada correctamente',
+            'foto_perfil_url' => $datos['foto_perfil_url'] ?? null
         ], 200);
     }
 
