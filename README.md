@@ -138,6 +138,8 @@ docs/       Documentación: guía de estilo, modelo de datos, bocetos y planific
 Documentación del proyecto:
 
 - [Guía de estilo](docs/Guia_Estilo/GuiaEstilo.md)
+- [Requisitos, perfiles y reglas](docs/Requisitos.md)
+- [Plan y registro de pruebas](docs/Pruebas.md)
 - [Arquitectura](docs/Arquitectura.md)
 - [Permisos por perfil](docs/Permisos.md)
 - [Correo de confirmación](docs/Correo_Confirmacion.md)
