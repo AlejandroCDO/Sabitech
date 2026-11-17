@@ -192,8 +192,7 @@
 }
 
 .detalle-lateral {
-  position: sticky;
-  top: 100px;
+  position: static;
 }
 
 .detalle-tarjeta {
