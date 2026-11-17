@@ -7,6 +7,7 @@ import { RegisterView } from "./views/auth/RegisterView";
 import { MisReservasView } from "./views/reservas/MisReservasView";
 import { ReservaDetalleView } from "./views/reservas/ReservaDetalleView";
 import { getUsuario } from "./utils/sesion";
+import { getUser } from "./api/usersApi";
 import Navbar from "./components/navbar/Navbar";
 import { Footer } from "./components/footer/Footer";
 
