@@ -46,6 +46,10 @@ export async function crearReserva(charlaId) {
     throw new ApiError(0, "No se ha podido conectar con el servidor.");
   }
 
+  if (response.status === 401) {
+    throw new ApiError(401, "Debes registrarte o iniciar sesión primero.", json);
+  }
+
   if (!response.ok) {
     throw new ApiError(response.status, json.mensaje ?? json.message, json);
   }
