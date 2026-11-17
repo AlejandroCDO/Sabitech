@@ -25,4 +25,4 @@ Route::middleware('token')->group(function () {
 });
 
 // Crear charlas (solo admin). Descomentar cuando el frontend envíe el token:
-// Route::post('/charlas', [CharlaController::class, 'crearCharla'])->middleware('token:admin');
+Route::post('/charlas', [CharlaController::class, 'crearCharla'])->middleware('token:admin');

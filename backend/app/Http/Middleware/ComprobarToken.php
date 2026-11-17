@@ -33,8 +33,8 @@ class ComprobarToken
             ], 401);
         }
 
-        // 3. Si la ruta exige un rol concreto, comprobarlo
-        if ($rol && $usuario->rol !== $rol) {
+        // 3. Si la ruta exige un rol concreto, comprobarlo (ignorando mayúsculas/minúsculas)
+        if ($rol && strtolower($usuario->rol) !== strtolower($rol)) {
             return response()->json([
                 'mensaje' => 'No tienes permiso para esta acción'
             ], 403);
