@@ -208,6 +208,11 @@
     color: #00BFA6;
 }
 
+.navbar-perfil {
+    padding: 0;
+    cursor: pointer;
+}
+
 /* TABLETS Y MÓVILES */
 @media (max-width: 768px) {
     .navbar {

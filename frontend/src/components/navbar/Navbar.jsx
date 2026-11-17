@@ -4,7 +4,7 @@ import "./Navbar.css";
 import logo from "../../assets/icons/banner.ico";
 import defaultAvatar from "../../assets/images/default.png";
 
-function FotoPerfil({ usuario }) {
+function FotoPerfil({ usuario, onIrAPerfil }) {
   const [imagenError, setImagenError] = useState(false);
 
   const fotoUrl = usuario?.foto_perfil_url;
@@ -16,25 +16,31 @@ function FotoPerfil({ usuario }) {
   const imagen = fotoUrl && !imagenError ? fotoUrl : defaultAvatar;
 
   return (
-    <div
+    <button
+      type="button"
       className="navbar-perfil"
-      title={usuario?.nombre || "Mi perfil"}
-      role="img"
-      aria-label={`Foto de perfil de ${usuario?.nombre || "usuario"}`}
+      title="Mi perfil"
+      aria-label="Ir a mi perfil"
+      onClick={onIrAPerfil}
     >
       <img
         src={imagen}
-        alt="Foto de perfil"
-        className="navbar-avatar"
-        onError={() => setImagenError(true)}
+        alt=""
+        className={`navbar-avatar ${!fotoUrl || imagenError ? "navbar-avatar-default" : ""}`}
+        onError={(evento) => {
+          if (evento.currentTarget.src !== defaultAvatar) {
+            setImagenError(true);
+          }
+        }}
       />
-    </div>
+    </button>
   );
 }
 
 function Navbar({
   logeado,
   usuario,
+  onIrAPerfil,
   onIrAInicio,
   onIrACharlas,
   onIrALogin,
@@ -82,6 +88,11 @@ function Navbar({
     evento.preventDefault();
     cerrarMenus();
     onIrAReservas();
+  }
+
+  function irAPerfil() {
+    cerrarMenus();
+    onIrAPerfil();
   }
 
   return (
@@ -140,17 +151,28 @@ function Navbar({
 
       {/* BOTÓN DE LA DERECHA */}
       {modoAuth ? (
-        <button type="button" className="navbar-volver" onClick={irAInicio}>
+        <button
+          type="button"
+          className="navbar-volver"
+          onClick={irAInicio}
+        >
           <span aria-hidden="true">←</span>
           Volver al inicio
         </button>
       ) : logeado ? (
         <div className="navbar-acciones">
-          <a href="#reservas" className="navbar-reservas" onClick={irAReservas}>
+          <a
+            href="#reservas"
+            className="navbar-reservas"
+            onClick={irAReservas}
+          >
             Mis reservas
           </a>
 
-          <FotoPerfil usuario={usuario} />
+          <FotoPerfil
+            usuario={usuario}
+            onIrAPerfil={irAPerfil}
+          />
         </div>
       ) : (
         <div className="navbar-acceso">

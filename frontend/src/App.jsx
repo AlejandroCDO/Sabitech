@@ -1,13 +1,19 @@
+
 import { useCallback, useEffect, useState } from "react";
 import "./App.css";
+
 import { MainView } from "./views/home/MainView";
 import { CharlasView } from "./views/charlas/CharlasView";
 import { LoginView } from "./views/auth/LoginView";
 import { RegisterView } from "./views/auth/RegisterView";
 import { MisReservasView } from "./views/reservas/MisReservasView";
 import { ReservaDetalleView } from "./views/reservas/ReservaDetalleView";
-import { getUsuario } from "./utils/sesion";
+import { PerfilView } from "./views/perfil/PerfilView";
+
 import { getUser } from "./api/usersApi";
+import { logout } from "./api/authApi";
+import { cerrarSesion } from "./utils/sesion";
+
 import Navbar from "./components/navbar/Navbar";
 import { Footer } from "./components/footer/Footer";
 
@@ -29,7 +35,12 @@ function App() {
 
     if (vista === "detalleReserva") {
       hash = "detalle-reserva";
-    } else if ((vista === "inicio" || vista === "charlas") && detalleAbierto) {
+    } else if (vista === "perfil") {
+      hash = "perfil";
+    } else if (
+      (vista === "inicio" || vista === "charlas") &&
+      detalleAbierto
+    ) {
       hash = "detalle-charla";
     }
 
@@ -43,7 +54,6 @@ function App() {
     if (token) {
       try {
         const user = await getUser(token);
-        console.log(user);
 
         setUsuario(user);
         setLogeado(true);
@@ -51,9 +61,7 @@ function App() {
       } catch (error) {
         console.log(error);
 
-        localStorage.removeItem("token");
-        sessionStorage.removeItem("token");
-
+        cerrarSesion();
         setUsuario(null);
         setLogeado(false);
         setVista("inicio");
@@ -78,50 +86,52 @@ function App() {
   function irAInicio() {
     setClaveVista((clave) => clave + 1);
     setVista("inicio");
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function irACharlas() {
     setClaveVista((clave) => clave + 1);
     setVista("charlas");
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function irAReservas() {
     setVista(logeado ? "reservas" : "login");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+  function irAPerfil() {
+    setVista(logeado ? "perfil" : "login");
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function irADetalleReserva(charlaId) {
     setCharlaIdDetalle(charlaId);
     setVista("detalleReserva");
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function volverAReservas() {
     setVista("reservas");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+  async function gestionarCierreSesion() {
+    try {
+      await logout();
+    } catch (error) {
+      console.error("No se pudo cerrar la sesión en el servidor:", error);
+    } finally {
+      cerrarSesion();
+      setUsuario(null);
+      setLogeado(false);
+      setVista("inicio");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   }
 
   const cerrarSesionCaducada = useCallback(() => {
-    localStorage.removeItem("token");
-    sessionStorage.removeItem("token");
-
+    cerrarSesion();
     setUsuario(null);
     setLogeado(false);
     setVista("login");
@@ -132,7 +142,8 @@ function App() {
       {(vista === "inicio" ||
         vista === "charlas" ||
         vista === "reservas" ||
-        vista === "detalleReserva") && (
+        vista === "detalleReserva" ||
+        vista === "perfil") && (
         <>
           <Navbar
             logeado={logeado}
@@ -145,6 +156,7 @@ function App() {
             onIrALogin={() => setVista("login")}
             onIrARegistro={irARegistro}
             onIrAReservas={irAReservas}
+            onIrAPerfil={irAPerfil}
           />
 
           {vista === "inicio" && (
@@ -175,6 +187,14 @@ function App() {
             <ReservaDetalleView
               charlaId={charlaIdDetalle}
               onVolver={volverAReservas}
+            />
+          )}
+
+          {vista === "perfil" && (
+            <PerfilView
+              usuario={usuario}
+              onVolver={irAInicio}
+              onCerrarSesion={gestionarCierreSesion}
             />
           )}
 
