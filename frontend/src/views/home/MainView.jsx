@@ -153,7 +153,7 @@ function claveDia(valor) {
   return `${fecha.getFullYear()}-${fecha.getMonth()}-${fecha.getDate()}`;
 }
 
-export function MainView({ onIrACharlas }) {
+export function MainView({ onIrACharlas, onDetalleChange }) {
   const [charlas, setCharlas] = useState([]);
   const [diaActivo, setDiaActivo] = useState("");
   const [cargando, setCargando] = useState(true);
@@ -164,6 +164,10 @@ export function MainView({ onIrACharlas }) {
   const [charlaSeleccionada, setCharlaSeleccionada] = useState(null);
   const [errorDetalle, setErrorDetalle] = useState("");
   const contenedorRef = useRef(null);
+
+  useEffect(() => {
+    onDetalleChange?.(pagina !== "lista");
+  }, [pagina, onDetalleChange]);
 
   const cargarCharlas = useCallback(async () => {
     try {

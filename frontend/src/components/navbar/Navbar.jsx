@@ -20,12 +20,19 @@ function Navbar({
     setAccesoAbierto(false);
   }
 
-  function irAInicio() {
+  function irAInicio(evento) {
+    evento.preventDefault();
     cerrarMenus();
     onIrAInicio();
   }
 
-  function irACharlas() {
+  function irASeccionInicio() {
+    cerrarMenus();
+    onIrAInicio();
+  }
+
+  function irACharlas(evento) {
+    evento.preventDefault();
     cerrarMenus();
     onIrACharlas();
   }
@@ -40,7 +47,8 @@ function Navbar({
     onIrARegistro();
   }
 
-  function irAReservas() {
+  function irAReservas(evento) {
+    evento.preventDefault();
     cerrarMenus();
     onIrAReservas();
   }
@@ -89,11 +97,11 @@ function Navbar({
             Charlas
           </a>
 
-          <a href="#ponentes" onClick={irAInicio}>
+          <a href="#ponentes" onClick={irASeccionInicio}>
             Ponentes
           </a>
 
-          <a href="#comunidad" onClick={irAInicio}>
+          <a href="#comunidad" onClick={irASeccionInicio}>
             La comunidad
           </a>
         </nav>

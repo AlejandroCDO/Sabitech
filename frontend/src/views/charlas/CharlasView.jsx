@@ -115,7 +115,7 @@ function obtenerTextoBusqueda(charla) {
     .toLowerCase();
 }
 
-export function CharlasView() {
+export function CharlasView({ onDetalleChange }) {
   const [charlas, setCharlas] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState("");
@@ -127,6 +127,10 @@ export function CharlasView() {
   const [reservandoId, setReservandoId] = useState(null);
   const [errorDetalle, setErrorDetalle] = useState("");
   const [aviso, setAviso] = useState(null);
+
+  useEffect(() => {
+    onDetalleChange?.(pagina !== "lista");
+  }, [pagina, onDetalleChange]);
 
   async function cargarCharlas() {
     try {

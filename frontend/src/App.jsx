@@ -8,7 +8,6 @@ import { MisReservasView } from "./views/reservas/MisReservasView";
 import { ReservaDetalleView } from "./views/reservas/ReservaDetalleView";
 import { getUsuario } from "./utils/sesion";
 import { getUser } from "./api/usersApi";
-import { getUser } from "./api/usersApi";
 import Navbar from "./components/navbar/Navbar";
 import { Footer } from "./components/footer/Footer";
 
@@ -17,10 +16,22 @@ function App() {
   const [vista, setVista] = useState("inicio");
   const [mensajeRegistro, setMensajeRegistro] = useState("");
   const [charlaIdDetalle, setCharlaIdDetalle] = useState(null);
+  const [detalleAbierto, setDetalleAbierto] = useState(false);
+  const [claveVista, setClaveVista] = useState(0);
 
   useEffect(() => {
     comprobarSesionIniciada();
   }, []);
+
+  useEffect(() => {
+    let hash = vista;
+    if (vista === "detalleReserva") {
+      hash = "detalle-reserva";
+    } else if ((vista === "inicio" || vista === "charlas") && detalleAbierto) {
+      hash = "detalle-charla";
+    }
+    window.history.replaceState(null, "", `#${hash}`);
+  }, [vista, detalleAbierto]);
 
   async function comprobarSesionIniciada() {
     const token =
@@ -59,10 +70,12 @@ function App() {
   }
 
   function irAInicio() {
+    setClaveVista((clave) => clave + 1);
     setVista("inicio");
   }
 
   function irACharlas() {
+  setClaveVista((clave) => clave + 1);
   setVista("charlas");
   window.scrollTo({
     top: 0,
@@ -118,11 +131,15 @@ function App() {
           />
 
           {vista === "inicio" && (
-            <MainView onIrACharlas={irACharlas} />
+            <MainView
+              key={claveVista}
+              onIrACharlas={irACharlas}
+              onDetalleChange={setDetalleAbierto}
+            />
           )}
 
           {vista === "charlas" && (
-            <CharlasView />
+            <CharlasView key={claveVista} onDetalleChange={setDetalleAbierto} />
           )}
 
           {vista === "reservas" && (
