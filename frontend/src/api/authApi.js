@@ -1,4 +1,5 @@
 import { ApiError } from "./ApiError.js";
+import { getToken } from "../utils/sesion.js";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8080/api";
 
@@ -32,4 +33,12 @@ export async function login(email, password) {
 
 export async function register(usuario) {
   return enviar("/register", usuario);
+}
+
+export async function logout() {
+  const response = await fetch(`${API_BASE_URL}/logout`, {
+    method: "POST",
+    headers: { Accept: "application/json", Authorization: `Bearer ${getToken()}` },
+  });
+  return response.ok;
 }

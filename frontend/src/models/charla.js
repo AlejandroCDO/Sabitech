@@ -55,7 +55,7 @@ export class Charla {
       fin: json.fin,
       aforo: json.aforo,
       plazas_ocupadas: json.plazas_ocupadas,
-      cancelada: json.cancelada,
+      cancelada: Boolean(json.cancelada),
       ponente_nombre: json.ponente_nombre,
       ponente_especialidad: json.ponente_especialidad,
       ubicacion_nombre: json.ubicacion_nombre,
