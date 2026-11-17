@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ComprobarToken
 {
-    public function handle(Request $request, Closure $next, ?string $rol = null): Response
+    public function handle(Request $request, Closure $next, string ...$roles): Response
     {
         // 1. Leer el token de la cabecera Authorization: Bearer ...
         $token = $request->bearerToken();
@@ -33,8 +33,8 @@ class ComprobarToken
             ], 401);
         }
 
-        // 3. Si la ruta exige un rol concreto, comprobarlo (ignorando mayúsculas/minúsculas)
-        if ($rol && strtolower($usuario->rol) !== strtolower($rol)) {
+        // 3. Si la ruta exige uno o varios roles, comprobar que el usuario tiene alguno (ignorando mayúsculas/minúsculas)
+        if ($roles && !in_array(strtolower($usuario->rol), array_map('strtolower', $roles))) {
             return response()->json([
                 'mensaje' => 'No tienes permiso para esta acción'
             ], 403);
