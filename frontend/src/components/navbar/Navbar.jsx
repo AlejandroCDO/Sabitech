@@ -1,9 +1,40 @@
-import { useState } from "react";
+
+import { useEffect, useState } from "react";
 import "./Navbar.css";
 import logo from "../../assets/icons/banner.ico";
+import defaultAvatar from "../../assets/images/default.png";
+
+function FotoPerfil({ usuario }) {
+  const [imagenError, setImagenError] = useState(false);
+
+  const fotoUrl = usuario?.foto_perfil_url;
+
+  useEffect(() => {
+    setImagenError(false);
+  }, [fotoUrl]);
+
+  const imagen = fotoUrl && !imagenError ? fotoUrl : defaultAvatar;
+
+  return (
+    <div
+      className="navbar-perfil"
+      title={usuario?.nombre || "Mi perfil"}
+      role="img"
+      aria-label={`Foto de perfil de ${usuario?.nombre || "usuario"}`}
+    >
+      <img
+        src={imagen}
+        alt="Foto de perfil"
+        className="navbar-avatar"
+        onError={() => setImagenError(true)}
+      />
+    </div>
+  );
+}
 
 function Navbar({
   logeado,
+  usuario,
   onIrAInicio,
   onIrACharlas,
   onIrALogin,
@@ -109,22 +140,18 @@ function Navbar({
 
       {/* BOTÓN DE LA DERECHA */}
       {modoAuth ? (
-        <button
-          type="button"
-          className="navbar-volver"
-          onClick={irAInicio}
-        >
+        <button type="button" className="navbar-volver" onClick={irAInicio}>
           <span aria-hidden="true">←</span>
           Volver al inicio
         </button>
       ) : logeado ? (
-        <a
-          href="#reservas"
-          className="navbar-reservas"
-          onClick={irAReservas}
-        >
-          Mis reservas
-        </a>
+        <div className="navbar-acciones">
+          <a href="#reservas" className="navbar-reservas" onClick={irAReservas}>
+            Mis reservas
+          </a>
+
+          <FotoPerfil usuario={usuario} />
+        </div>
       ) : (
         <div className="navbar-acceso">
           <button

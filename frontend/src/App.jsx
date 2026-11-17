@@ -13,6 +13,7 @@ import { Footer } from "./components/footer/Footer";
 
 function App() {
   const [logeado, setLogeado] = useState(false);
+  const [usuario, setUsuario] = useState(null);
   const [vista, setVista] = useState("inicio");
   const [mensajeRegistro, setMensajeRegistro] = useState("");
   const [charlaIdDetalle, setCharlaIdDetalle] = useState(null);
@@ -25,11 +26,13 @@ function App() {
 
   useEffect(() => {
     let hash = vista;
+
     if (vista === "detalleReserva") {
       hash = "detalle-reserva";
     } else if ((vista === "inicio" || vista === "charlas") && detalleAbierto) {
       hash = "detalle-charla";
     }
+
     window.history.replaceState(null, "", `#${hash}`);
   }, [vista, detalleAbierto]);
 
@@ -42,6 +45,7 @@ function App() {
         const user = await getUser(token);
         console.log(user);
 
+        setUsuario(user);
         setLogeado(true);
         setVista("inicio");
       } catch (error) {
@@ -50,10 +54,12 @@ function App() {
         localStorage.removeItem("token");
         sessionStorage.removeItem("token");
 
+        setUsuario(null);
         setLogeado(false);
         setVista("inicio");
       }
     } else {
+      setUsuario(null);
       setLogeado(false);
       setVista("inicio");
     }
@@ -75,16 +81,18 @@ function App() {
   }
 
   function irACharlas() {
-  setClaveVista((clave) => clave + 1);
-  setVista("charlas");
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth",
-  });
-}
+    setClaveVista((clave) => clave + 1);
+    setVista("charlas");
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
 
   function irAReservas() {
     setVista(logeado ? "reservas" : "login");
+
     window.scrollTo({
       top: 0,
       behavior: "smooth",
@@ -94,6 +102,7 @@ function App() {
   function irADetalleReserva(charlaId) {
     setCharlaIdDetalle(charlaId);
     setVista("detalleReserva");
+
     window.scrollTo({
       top: 0,
       behavior: "smooth",
@@ -102,6 +111,7 @@ function App() {
 
   function volverAReservas() {
     setVista("reservas");
+
     window.scrollTo({
       top: 0,
       behavior: "smooth",
@@ -112,17 +122,24 @@ function App() {
     localStorage.removeItem("token");
     sessionStorage.removeItem("token");
 
+    setUsuario(null);
     setLogeado(false);
     setVista("login");
   }, []);
 
   return (
     <>
-      {(vista === "inicio" || vista === "charlas" || vista === "reservas" || vista === "detalleReserva") && (
+      {(vista === "inicio" ||
+        vista === "charlas" ||
+        vista === "reservas" ||
+        vista === "detalleReserva") && (
         <>
           <Navbar
             logeado={logeado}
-            vistaActiva={vista === "detalleReserva" ? "reservas" : vista}
+            usuario={usuario}
+            vistaActiva={
+              vista === "detalleReserva" ? "reservas" : vista
+            }
             onIrAInicio={irAInicio}
             onIrACharlas={irACharlas}
             onIrALogin={() => setVista("login")}
@@ -139,7 +156,10 @@ function App() {
           )}
 
           {vista === "charlas" && (
-            <CharlasView key={claveVista} onDetalleChange={setDetalleAbierto} />
+            <CharlasView
+              key={claveVista}
+              onDetalleChange={setDetalleAbierto}
+            />
           )}
 
           {vista === "reservas" && (
@@ -152,7 +172,10 @@ function App() {
           )}
 
           {vista === "detalleReserva" && (
-            <ReservaDetalleView charlaId={charlaIdDetalle} onVolver={volverAReservas} />
+            <ReservaDetalleView
+              charlaId={charlaIdDetalle}
+              onVolver={volverAReservas}
+            />
           )}
 
           <Footer />
