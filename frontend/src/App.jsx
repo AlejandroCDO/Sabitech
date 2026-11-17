@@ -5,6 +5,7 @@ import { CharlasView } from "./views/charlas/CharlasView";
 import { LoginView } from "./views/auth/LoginView";
 import { RegisterView } from "./views/auth/RegisterView";
 import { MisReservasView } from "./views/reservas/MisReservasView";
+import { ReservaDetalleView } from "./views/reservas/ReservaDetalleView";
 import { getUser } from "./api/usersApi";
 import Navbar from "./components/navbar/Navbar";
 import { Footer } from "./components/footer/Footer";
@@ -13,6 +14,7 @@ function App() {
   const [logeado, setLogeado] = useState(false);
   const [vista, setVista] = useState("inicio");
   const [mensajeRegistro, setMensajeRegistro] = useState("");
+  const [charlaIdDetalle, setCharlaIdDetalle] = useState(null);
 
   useEffect(() => {
     comprobarSesionIniciada();
@@ -74,6 +76,23 @@ function App() {
     });
   }
 
+  function irADetalleReserva(charlaId) {
+    setCharlaIdDetalle(charlaId);
+    setVista("detalleReserva");
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
+  function volverAReservas() {
+    setVista("reservas");
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
   const cerrarSesionCaducada = useCallback(() => {
     localStorage.removeItem("token");
     sessionStorage.removeItem("token");
@@ -84,11 +103,11 @@ function App() {
 
   return (
     <>
-      {(vista === "inicio" || vista === "charlas" || vista === "reservas") && (
+      {(vista === "inicio" || vista === "charlas" || vista === "reservas" || vista === "detalleReserva") && (
         <>
           <Navbar
             logeado={logeado}
-            vistaActiva={vista}
+            vistaActiva={vista === "detalleReserva" ? "reservas" : vista}
             onIrAInicio={irAInicio}
             onIrACharlas={irACharlas}
             onIrALogin={() => setVista("login")}
@@ -108,8 +127,13 @@ function App() {
             <MisReservasView
               onIrAInicio={irAInicio}
               onIrACharlas={irACharlas}
+              onVerDetalle={irADetalleReserva}
               onSesionCaducada={cerrarSesionCaducada}
             />
+          )}
+
+          {vista === "detalleReserva" && (
+            <ReservaDetalleView charlaId={charlaIdDetalle} onVolver={volverAReservas} />
           )}
 
           <Footer />

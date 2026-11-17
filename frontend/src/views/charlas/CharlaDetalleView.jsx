@@ -103,13 +103,23 @@ function datosPlazas(charla) {
   };
 }
 
-export function CharlaDetalleView({ charla, reservando, error, onVolver, onReservar }) {
+export function CharlaDetalleView({
+  charla,
+  reservando = false,
+  reservada = false,
+  error = "",
+  etiquetaVolver = "Todas las charlas",
+  onVolver,
+  onReservar,
+}) {
   const empezada = aFecha(charla.inicio) <= new Date();
   const plazas = datosPlazas(charla);
-  const deshabilitado = reservando || charla.cancelada || charla.completa || empezada;
+  const deshabilitado = reservando || reservada || charla.cancelada || charla.completa || empezada;
 
   let textoBoton = "Reservar plaza";
-  if (reservando) {
+  if (reservada) {
+    textoBoton = charla.cancelada ? "Charla cancelada" : "Plaza reservada";
+  } else if (reservando) {
     textoBoton = "Reservando...";
   } else if (charla.cancelada) {
     textoBoton = "Charla cancelada";
@@ -128,7 +138,7 @@ export function CharlaDetalleView({ charla, reservando, error, onVolver, onReser
           </button>
           <Icono nombre="flecha" />
           <button type="button" onClick={onVolver}>
-            Todas las charlas
+            {etiquetaVolver}
           </button>
           <Icono nombre="flecha" />
           <span className="detalle-migas-actual">Detalle de charla</span>
@@ -219,9 +229,15 @@ export function CharlaDetalleView({ charla, reservando, error, onVolver, onReser
               </button>
 
               <p className="detalle-nota">
-                Tu plaza quedará guardada en Mis reservas.
-                <br />
-                Podrás cancelarla si cambian tus planes.
+                {reservada ? (
+                  "Esta plaza ya está guardada en Mis reservas."
+                ) : (
+                  <>
+                    Tu plaza quedará guardada en Mis reservas.
+                    <br />
+                    Podrás cancelarla si cambian tus planes.
+                  </>
+                )}
               </p>
             </div>
           </aside>

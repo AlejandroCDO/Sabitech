@@ -92,13 +92,30 @@ function textoResumen(reservas) {
   return partes.join(" · ");
 }
 
-function TarjetaReserva({ reserva }) {
+function TarjetaReserva({ reserva, onVerDetalle }) {
   const [imagenFallida, setImagenFallida] = useState(false);
   const cancelada = charlaCancelada(reserva);
   const estado = ESTADOS[reserva.estado] ?? ESTADOS.pendiente;
 
+  function alPulsarTecla(evento) {
+    if (evento.target !== evento.currentTarget) {
+      return;
+    }
+    if (evento.key === "Enter" || evento.key === " ") {
+      evento.preventDefault();
+      onVerDetalle(reserva.charla_id);
+    }
+  }
+
   return (
-    <article className={`reserva-tarjeta ${cancelada ? "reserva-tarjeta--cancelada" : ""}`}>
+    <article
+      className={`reserva-tarjeta ${cancelada ? "reserva-tarjeta--cancelada" : ""}`}
+      role="button"
+      tabIndex={0}
+      aria-label={`Ver detalle de ${reserva.titulo}`}
+      onClick={() => onVerDetalle(reserva.charla_id)}
+      onKeyDown={alPulsarTecla}
+    >
       <div className="reserva-imagen">
         {reserva.foto_url && !imagenFallida ? (
           <img src={reserva.foto_url} alt={reserva.titulo} onError={() => setImagenFallida(true)} />
@@ -123,7 +140,14 @@ function TarjetaReserva({ reserva }) {
         </p>
       </div>
 
-      <div className="reserva-acciones">
+      <div
+        className="reserva-acciones"
+        onClick={(evento) => {
+          if (evento.target.closest("button")) {
+            evento.stopPropagation();
+          }
+        }}
+      >
         {cancelada ? (
           <div className="reserva-sin-acreditacion">
             <Icono nombre="cancelada" />
@@ -141,7 +165,7 @@ function TarjetaReserva({ reserva }) {
   );
 }
 
-export function MisReservasView({ onIrAInicio, onIrACharlas, onSesionCaducada }) {
+export function MisReservasView({ onIrAInicio, onIrACharlas, onVerDetalle, onSesionCaducada }) {
   const [reservas, setReservas] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState("");
@@ -251,7 +275,7 @@ export function MisReservasView({ onIrAInicio, onIrACharlas, onSesionCaducada })
 
             <div className="reservas-lista">
               {reservas.map((reserva) => (
-                <TarjetaReserva key={reserva.id} reserva={reserva} />
+                <TarjetaReserva key={reserva.id} reserva={reserva} onVerDetalle={onVerDetalle} />
               ))}
             </div>
           </>
