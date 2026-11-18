@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./Navbar.css";
 import logo from "../../assets/icons/banner.ico";
 import defaultAvatar from "../../assets/images/default.png";
@@ -46,6 +46,20 @@ function Navbar({
 }) {
   const [menuAbierto, setMenuAbierto] = useState(false);
   const [accesoAbierto, setAccesoAbierto] = useState(false);
+  const accesoRef = useRef(null);
+
+  useEffect(() => {
+    if (!accesoAbierto) return;
+
+    function cerrarAlClicarFuera(evento) {
+      if (accesoRef.current && !accesoRef.current.contains(evento.target)) {
+        setAccesoAbierto(false);
+      }
+    }
+
+    document.addEventListener("click", cerrarAlClicarFuera);
+    return () => document.removeEventListener("click", cerrarAlClicarFuera);
+  }, [accesoAbierto]);
 
   function cerrarMenus() {
     setMenuAbierto(false);
@@ -170,7 +184,7 @@ function Navbar({
           />
         </div>
       ) : (
-        <div className="navbar-acceso">
+        <div className="navbar-acceso" ref={accesoRef}>
           <button
             className="navbar-reservas"
             type="button"
