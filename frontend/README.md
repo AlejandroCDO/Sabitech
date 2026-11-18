@@ -1,16 +1,53 @@
-# React + Vite
+# Frontend de SABITECH WEB
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Interfaz hecha con React 19 y Vite 8. Consume la API de Laravel y muestra el catálogo, el registro, el login y las reservas.
 
-Currently, two official plugins are available:
+## Arranque con Docker
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Desde la raíz del repositorio:
 
-## React Compiler
+```bash
+docker compose up -d --build frontend
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+La aplicación queda en <http://localhost:5173>.
 
-## Expanding the ESLint configuration
+## Arranque sin Docker
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm install
+npm run dev
+```
+
+La URL de la API se toma de `VITE_API_URL`. Si no se define, se usa `http://localhost:8080/api`.
+
+## Comandos
+
+```bash
+npm run dev      # desarrollo con recarga en caliente
+npm run build    # compilación de producción
+npm run preview  # previsualizar la compilación
+npm run lint     # ESLint
+```
+
+## Estructura
+
+```text
+src/
+├── api/         Llamadas a la API y ApiError
+├── assets/      Imágenes, logo y avatar por defecto
+├── components/  Navbar, footer, formularios y modal
+├── hooks/       useCharlasReservadas
+├── models/      Charla y User
+├── utils/       Gestión del token
+├── views/       Inicio, charlas, auth, reservas y perfil
+├── App.jsx      Estado global y navegación
+└── main.jsx     Punto de entrada
+```
+
+## Documentación
+
+- [Frontend](../docs/Readmes/Frontend.md)
+- [Recorridos de usuario](../docs/Readmes/Recorridos_Usuario.md)
+- [Despliegue](../docs/Readmes/Despliegue.md)
+- [README principal](../README.md)

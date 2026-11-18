@@ -6,27 +6,30 @@ Aplicación web para gestionar las reservas y la asistencia a las jornadas de ch
 
 Alberto Bellanato, Alejandro Company y Marc Penadés.
 
-## Funcionalidades
+## Estado del proyecto
+
+Versión del **primer checkpoint**. La reserva de una plaza funciona de principio a fin. El correo de confirmación y el QR temporal están diseñados, pero todavía no implementados.
 
 **Implementado**
 
-- Registro e inicio de sesión con token (opción de recordar la sesión).
-- Catálogo de charlas con búsqueda y filtros (todas, próximas, finalizadas, canceladas) y detalle de cada charla.
-- Reserva de plaza con control de aforo, de reservas duplicadas y de charlas canceladas o ya empezadas.
-- Mis reservas, detalle de la reserva y cancelación con confirmación (la plaza queda libre).
-- Aviso "Plaza reservada" en las charlas que la persona ya ha reservado.
-- Perfil de usuario con foto de perfil (URL).
+- Registro e inicio de sesión con token y opción de recordar la sesión.
+- Catálogo de charlas con búsqueda, filtros y detalle.
+- Reserva con control de aforo, reservas duplicadas, charlas canceladas y charlas ya empezadas.
+- Mis reservas, detalle y cancelación con confirmación.
+- Aviso “Plaza reservada” en las charlas ya reservadas.
+- Perfil de usuario con foto mediante URL.
 
 **Pendiente**
 
 - Correo de confirmación de la reserva.
-- QR temporal que se renueva cada 30 segundos y validación de asistencia.
-- Área de gestión de charlas e inscripciones para la organización.
+- QR temporal y validación de asistencia.
+- Área de gestión visual para la organización.
+- Pruebas automáticas y entorno de demostración con HTTPS.
 
 ## Tecnologías
 
 | Capa | Tecnología |
-| --- | --- |
+|---|---|
 | Frontend | React 19, Vite 8, JavaScript y CSS |
 | Backend | PHP 8.4, Laravel 13 (API REST) |
 | Base de datos | MySQL 8.4 |
@@ -34,20 +37,20 @@ Alberto Bellanato, Alejandro Company y Marc Penadés.
 
 ## Arquitectura
 
-```
-Navegador ──► Frontend (React + Vite) ──► API Laravel (PHP + Apache) ──► MySQL
-              http://localhost:5173        http://localhost:8080/api       (red interna)
+```text
+Navegador --> Frontend React + Vite --> API Laravel + Apache --> MySQL
+             http://localhost:5173    http://localhost:8080/api   red interna
 ```
 
-El navegador carga la aplicación del contenedor `frontend` y esta consume la API del contenedor `web` desde el propio navegador. La API se autentica con un token en la cabecera `Authorization: Bearer`.
+El navegador carga la aplicación del contenedor `frontend` y consume la API del contenedor `web`. La API se autentica con un token en la cabecera `Authorization: Bearer`.
 
 | Servicio | Contenedor | URL | Descripción |
-| --- | --- | --- | --- |
+|---|---|---|---|
 | `frontend` | Node 24 + Vite | http://localhost:5173 | Interfaz React con recarga en caliente |
 | `web` | PHP 8.4 + Apache | http://localhost:8080 | API Laravel |
 | `db` | MySQL 8.4 | Red interna de Docker | Base de datos |
 
-El código de `frontend/` y `backend/` se monta como volumen, por lo que los cambios se aplican sin reconstruir las imágenes. Los puertos solo se publican en `127.0.0.1`.
+El código de `frontend/` y `backend/` se monta como volumen. Los puertos solo se publican en `127.0.0.1`.
 
 ## Requisitos
 
@@ -78,7 +81,7 @@ El código de `frontend/` y `backend/` se monta como volumen, por lo que los cam
 
 4. En `backend/.env`, usa los mismos valores:
 
-   ```
+   ```env
    APP_URL=http://localhost:8080
    DB_CONNECTION=mysql
    DB_HOST=db
@@ -94,14 +97,14 @@ El código de `frontend/` y `backend/` se monta como volumen, por lo que los cam
    docker compose up -d --build
    ```
 
-6. Instala las dependencias del backend y genera la clave de la aplicación:
+6. Instala las dependencias del backend y genera la clave:
 
    ```bash
    docker compose exec web composer install
    docker compose exec web php artisan key:generate
    ```
 
-7. Espera unos segundos a que MySQL termine de iniciarse y crea las tablas con los datos de prueba:
+7. Espera unos segundos a que MySQL termine de iniciarse y crea las tablas con datos de prueba:
 
    ```bash
    docker compose exec web php artisan migrate --seed
@@ -109,62 +112,78 @@ El código de `frontend/` y `backend/` se monta como volumen, por lo que los cam
 
    Si falla por no poder conectar con la base de datos, espera un poco y repite el comando.
 
-8. Abre la aplicación.
+8. Abre la aplicación:
 
    - Frontend: http://localhost:5173
    - API: http://localhost:8080/api
-   - Comprobación de salud del backend: http://localhost:8080/up
+   - Salud del backend: http://localhost:8080/up
 
 ## Usuarios de prueba
 
 Los crea el seeder. Solo son para desarrollo.
 
 | Perfil | Email | Contraseña |
-| --- | --- | --- |
+|---|---|---|
 | Administrador | `admin@sabitech.test` | `password` |
 | Organizador | `organizador@sabitech.test` | `password` |
 | Asistente | `asistente1@sabitech.test` (hasta `asistente25`) | `password` |
 
 ## Estructura del repositorio
 
-```
+```text
 backend/    API Laravel (controladores, middleware, migraciones y seeders)
 frontend/   Aplicación React (views, components, api, hooks, models y utils)
 docker/     Configuración de Apache
 database/   Esquema SQL de referencia
-docs/       Documentación: guía de estilo, modelo de datos, bocetos y planificación
+docs/       Documentación, PDFs, imágenes y READMEs
 ```
 
-Documentación del proyecto:
+## Documentación
 
-- [Guía de estilo](docs/Guia_Estilo/GuiaEstilo.md)
-- [Requisitos, perfiles y reglas](docs/Requisitos.md)
-- [Plan y registro de pruebas](docs/Pruebas.md)
-- [Arquitectura](docs/Arquitectura.md)
-- [Permisos por perfil](docs/Permisos.md)
-- [Correo de confirmación](docs/Correo_Confirmacion.md)
-- [QR temporal y asistencia](docs/QR_Temporal.md)
-- [Pendientes](docs/Pendientes.md)
-- Modelo de datos: `docs/Imagenes/ModeloDeDatos.png`
-- Bocetos, planificación y enunciado: `docs/PDF/`
+Índice completo: [docs/Readmes/README.md](docs/Readmes/README.md)
+
+- [Requisitos, perfiles y reglas](docs/Readmes/Requisitos.md)
+- [Planificación](docs/Readmes/Planificacion.md)
+- [Modelo de datos](docs/Readmes/Modelo_Datos.md)
+- [Recorridos de usuario](docs/Readmes/Recorridos_Usuario.md)
+- [Frontend](docs/Readmes/Frontend.md)
+- [Backend](docs/Readmes/Backend.md)
+- [Despliegue](docs/Readmes/Despliegue.md)
+- [Arquitectura](docs/Readmes/Arquitectura.md)
+- [Guía de estilo](docs/Readmes/GuiaEstilo.md)
+- [Permisos por perfil](docs/Readmes/Permisos.md)
+- [Plan y registro de pruebas](docs/Readmes/Pruebas.md)
+- [Correo de confirmación](docs/Readmes/Correo_Confirmacion.md)
+- [QR temporal y asistencia](docs/Readmes/QR_Temporal.md)
+- [Empresa NexusCode](docs/Readmes/Empresa.md)
+- [Uso real de IA](docs/Readmes/IA_Uso_Proyecto.md)
+- [Entrega del checkpoint](docs/Readmes/Entrega_Checkpoint.md)
+- [Prompt para la memoria](docs/Readmes/Prompt_Memoria_Claude.md)
+- [Pendientes](docs/Readmes/Pendientes.md)
+
+Recursos gráficos y enunciados:
+
+- `docs/Imagenes/Modelo_Datos_Sabitech_Web.png`
+- `docs/PDF/`
+- `docs/Instrucciones/Checkpoint_TFG.txt`
 
 ## API
 
-Prefijo `/api`. Las rutas con token necesitan la cabecera `Authorization: Bearer <token>`, que se obtiene en `POST /login`.
+Prefijo `/api`. Las rutas con token necesitan `Authorization: Bearer <token>`, que se obtiene en `POST /login`.
 
 | Método y ruta | Acceso | Descripción |
-| --- | --- | --- |
+|---|---|---|
 | `GET /charlas` | Público | Listado de charlas con ponente, ubicación y plazas |
-| `POST /register` | Público | Registro de un usuario (rol asistente) |
+| `POST /register` | Público | Registro de un usuario con rol asistente |
 | `POST /login` | Público | Devuelve el token y los datos del usuario |
 | `GET /usuario` | Token | Datos del usuario autenticado |
-| `GET /usuarios` | Token de administrador u organizador | Listado de usuarios |
-| `GET /asistencias` | Token de administrador u organizador | Listado de asistencias |
 | `PATCH /usuario/foto-perfil` | Token | Cambia o quita la foto de perfil |
 | `POST /logout` | Token | Invalida el token |
 | `GET /reservas` | Token | Reservas activas del usuario |
 | `POST /reservas` | Token | Crea una reserva (`charla_id`) |
 | `PATCH /reservas/{id}/cancelar` | Token | Cancela una reserva propia y libera la plaza |
+| `GET /usuarios` | Token de administrador u organizador | Listado de usuarios |
+| `GET /asistencias` | Token de administrador u organizador | Listado de asistencias |
 | `POST /charlas` | Token de administrador | Crea una charla |
 
 ## Reglas de reserva y cancelación
@@ -172,9 +191,9 @@ Prefijo `/api`. Las rutas con token necesitan la cabecera `Authorization: Bearer
 Las decisiones las toma siempre el backend, dentro de una transacción con bloqueo de la charla para no superar el aforo con peticiones simultáneas.
 
 | Situación | Respuesta |
-| --- | --- |
+|---|---|
 | Sin token o token no válido | 401 |
-| Datos no válidos (por ejemplo, un email repetido al registrarse) | 422 |
+| Datos no válidos, por ejemplo un email repetido | 422 |
 | La charla o la reserva no existe | 404 |
 | Charla cancelada o ya empezada | 409 |
 | Sin plazas libres | 409 |
@@ -185,33 +204,15 @@ Una reserva solo puede cancelarla su propietario. Al cancelar se libera la plaza
 
 ## Comandos habituales
 
-Arrancar o reconstruir los contenedores:
-
 ```bash
 docker compose up -d --build
-```
-
-Reconstruir solo el frontend:
-
-```bash
-docker compose up -d --build frontend
-```
-
-Ver el estado y los registros:
-
-```bash
 docker compose ps
 docker compose logs -f frontend
 docker compose logs -f web
-```
-
-Parar los contenedores sin borrar la base de datos:
-
-```bash
 docker compose down
 ```
 
-Actualizar las dependencias del frontend tras cambiar `package.json`:
+Actualizar dependencias del frontend:
 
 ```bash
 docker compose exec frontend npm install
@@ -254,12 +255,10 @@ docker compose exec -T db sh -c 'mysql -u root -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_
 ## Trabajo en equipo
 
 - Ramas: `main` para versiones estables, `develop` para la integración y `feature/*` para cada funcionalidad.
-- Los cambios entran en `develop` mediante pull request, revisado por otra persona del equipo.
+- Los cambios entran en `develop` mediante pull request revisado por otra persona.
 - Las tareas y las incidencias se registran como issues en GitHub.
+- Repositorio: https://github.com/AlejandroCDO/Sabitech
 
-## Pendiente
+## Asignaturas convalidadas
 
-- Correo de confirmación y QR temporal con validación de asistencia.
-- Área de gestión para la organización y rol de validador de asistencia.
-- Pruebas automáticas del backend y de la integración continua.
-- Entorno de demostración con HTTPS.
+IPE II, Sostenibilidad, Digitalización e Inglés Oral están convalidadas. La documentación incluye solo una introducción breve de NexusCode y el registro real de IA en el proyecto. No se desarrollan el plan económico, el plan de digitalización ni el informe de vídeos en inglés.

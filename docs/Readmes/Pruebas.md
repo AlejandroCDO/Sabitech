@@ -4,11 +4,13 @@ Este documento recoge las pruebas de la primera versión funcional (punto 3 del 
 
 **Cómo usarlo:** la columna "Resultado esperado" está contrastada con el código del backend. Las columnas **Resultado**, **Captura** y **Fecha y quién** están vacías: hay que ejecutar cada prueba, anotar `OK` o `FALLA` y adjuntar la captura. No se debe dar un caso por superado sin haberlo ejecutado.
 
+Para el checkpoint se deben adjuntar, como mínimo, capturas de **PR-01, PR-02 y PR-03**. El resto de casos puede quedar documentado como pendiente. Las capturas se guardan en `docs/Imagenes/` o se enlazan desde la memoria, y cada una debe tener un pie de figura que indique qué se ve y a qué caso corresponde. La lista de evidencias está en [Entrega del checkpoint](Entrega_Checkpoint.md).
+
 Los identificadores `RF-xx` y `RN-xx` remiten a [Requisitos](Requisitos.md).
 
 ## 1. Preparación del entorno
 
-1. Arranca el entorno siguiendo el [README](../README.md).
+1. Arranca el entorno siguiendo el [README](../../README.md).
 2. Parte de datos conocidos:
 
    ```bash

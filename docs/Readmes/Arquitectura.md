@@ -112,4 +112,12 @@ Hoy existe un único entorno, el de **desarrollo** (Docker Compose con recarga e
 
 ## 10. Cómo ejecutarlo
 
-Las instrucciones de instalación, los usuarios de prueba y los comandos habituales están en el [README](../README.md).
+Las instrucciones de instalación, los usuarios de prueba y los comandos habituales están en el [README](../../README.md). El detalle del entorno está en [Despliegue](Despliegue.md).
+
+## 11. Documentos relacionados
+
+- [Modelo de datos](Modelo_Datos.md)
+- [Frontend](Frontend.md)
+- [Backend](Backend.md)
+- [Despliegue](Despliegue.md)
+- [Recorridos de usuario](Recorridos_Usuario.md)

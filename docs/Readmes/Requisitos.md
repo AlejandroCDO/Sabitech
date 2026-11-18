@@ -59,11 +59,11 @@ Prioridad: **I** imprescindible, **M** mejora.
 | ID | Requisito | Estado |
 |---|---|---|
 | RNF-01 | **Adaptación a dispositivos.** La web se usa desde móvil, tableta y ordenador, con la información y los controles reorganizados en cada tamaño | Hecho en las pantallas actuales |
-| RNF-02 | **Accesibilidad.** Etiquetas en formularios, texto alternativo, foco visible, contraste suficiente, navegación por teclado y mensajes de error comprensibles | Parcial: hay una base; faltan la comprobación con una herramienta y varias correcciones (ver la [guía de estilo](Guia_Estilo/GuiaEstilo.md)) |
+| RNF-02 | **Accesibilidad.** Etiquetas en formularios, texto alternativo, foco visible, contraste suficiente, navegación por teclado y mensajes de error comprensibles | Parcial: hay una base; faltan la comprobación con una herramienta y varias correcciones (ver la [guía de estilo](GuiaEstilo.md)) |
 | RNF-03 | **Seguridad.** Contraseñas con hash, token guardado solo como hash, permisos comprobados en el servidor y consultas con parámetros | Hecho en lo implementado |
 | RNF-04 | **Integridad de datos.** Claves foráneas, claves únicas y restricciones en la base de datos, y reservas dentro de transacciones | Hecho |
 | RNF-05 | **Usabilidad.** Cada acción informa del resultado: carga en curso, operación aceptada, falta de plazas o problema de conexión, con opción de reintentar | Hecho en las pantallas actuales |
-| RNF-06 | **Reproducibilidad.** Otro equipo puede poner en marcha la aplicación con las instrucciones del README | Hecho (ver el [README](../README.md)) |
+| RNF-06 | **Reproducibilidad.** Otro equipo puede poner en marcha la aplicación con las instrucciones del README | Hecho (ver el [README](../../README.md)) |
 | RNF-07 | **Identidad visual coherente.** Paleta, tipografías y componentes consistentes en todas las pantallas | Parcial (ver la guía de estilo) |
 | RNF-08 | **Documentación.** Arquitectura, permisos, pruebas y pendientes documentados | En curso |
 
