@@ -1,0 +1,244 @@
+
+.perfil {
+    min-height: 75vh;
+    padding: 55px 6%;
+    background-color: #F4F6F9;
+}
+
+.perfil-contenedor {
+    width: 100%;
+    max-width: 1050px;
+    margin: 0 auto;
+}
+
+.perfil-volver {
+    padding: 0;
+    margin-bottom: 30px;
+    border: none;
+    background: transparent;
+    color: #263445;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.perfil-volver:hover {
+    color: #00A991;
+    transform: translateX(-3px);
+}
+
+.perfil-cabecera {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 35px;
+    animation: perfilEntrada 0.5s ease both;
+}
+
+.perfil-avatar {
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 50%;
+    border: 3px solid #00BFA6;
+    background-color: #FFFFFF;
+}
+
+.perfil-avatar img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.perfil-avatar:hover img {
+    transform: scale(1.06);
+}
+
+.perfil-etiqueta {
+    color: #00A991;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+.perfil-presentacion h1 {
+    margin: 7px 0;
+    color: #263445;
+    font-size: 32px;
+}
+
+.perfil-presentacion p,
+.perfil-tarjeta-cabecera p,
+.perfil-sesion p {
+    margin: 0;
+    color: #687586;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.perfil-tarjeta,
+.perfil-sesion {
+    padding: 30px;
+    border-radius: 12px;
+    background-color: #FFFFFF;
+    box-shadow: 0 4px 18px rgba(38, 52, 69, 0.06);
+    animation: perfilEntrada 0.5s 0.08s ease both;
+}
+
+.perfil-tarjeta {
+    margin-bottom: 22px;
+    transition: box-shadow 0.25s ease;
+}
+
+.perfil-tarjeta:hover {
+    box-shadow: 0 10px 26px rgba(38, 52, 69, 0.09);
+}
+
+.perfil-sesion {
+    animation-delay: 0.16s;
+}
+
+.perfil-tarjeta-cabecera {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #E7EBF0;
+}
+
+.perfil-tarjeta-cabecera h2,
+.perfil-sesion h2 {
+    margin: 0 0 7px;
+    color: #263445;
+    font-size: 19px;
+}
+
+.perfil-editar {
+    padding: 10px 17px;
+    border: 1px solid #D9E0E7;
+    border-radius: 7px;
+    background-color: #F4F6F9;
+    color: #8993A0;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: not-allowed;
+}
+
+.perfil-datos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px 40px;
+    padding-top: 25px;
+}
+
+.perfil-campo {
+    transition: transform 0.2s ease;
+}
+
+.perfil-campo:hover {
+    transform: translateX(3px);
+}
+
+.perfil-campo span {
+    display: block;
+    margin-bottom: 8px;
+    color: #8993A0;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.perfil-campo p {
+    margin: 0;
+    color: #263445;
+    font-size: 15px;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.perfil-sesion {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+}
+
+.perfil-cerrar-sesion {
+    flex-shrink: 0;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: #D94B4B;
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.perfil-cerrar-sesion:hover {
+    background-color: #BD3838;
+    transform: translateY(-1px);
+}
+
+.perfil-cerrar-sesion:active {
+    transform: scale(0.98);
+}
+
+@keyframes perfilEntrada {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 650px) {
+    .perfil {
+        padding: 35px 5%;
+    }
+
+    .perfil-cabecera {
+        gap: 16px;
+    }
+
+    .perfil-avatar {
+        width: 75px;
+        height: 75px;
+    }
+
+    .perfil-presentacion h1 {
+        font-size: 25px;
+    }
+
+    .perfil-tarjeta,
+    .perfil-sesion {
+        padding: 22px;
+    }
+
+    .perfil-tarjeta-cabecera {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .perfil-datos {
+        grid-template-columns: 1fr;
+        gap: 22px;
+    }
+
+    .perfil-sesion {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .perfil-cerrar-sesion {
+        width: 100%;
+    }
+}

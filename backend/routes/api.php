@@ -1,0 +1,32 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AsistenciaController;
+use App\Http\Controllers\CharlaController;
+use App\Http\Controllers\ReservaController;
+use App\Http\Controllers\UsuarioController;
+
+// Rutas públicas (no necesitan token)
+Route::get('/charlas', [CharlaController::class, 'index']);
+Route::post('/register', [UsuarioController::class, 'crearUsuario']);
+Route::post('/login', [UsuarioController::class, 'login']);
+
+// Rutas que necesitan token
+Route::middleware('token')->group(function () {
+    Route::get('/usuario', [UsuarioController::class, 'getUsuario']);
+    Route::patch('/usuario/foto-perfil', [UsuarioController::class, 'actualizarFotoPerfil']);
+    Route::post('/logout', [UsuarioController::class, 'logout']);
+
+    Route::get('/reservas', [ReservaController::class, 'listarMisReservas']);
+    Route::post('/reservas', [ReservaController::class, 'crearReserva']);
+    Route::patch('/reservas/{id}/cancelar', [ReservaController::class, 'cancelarReserva'])->whereNumber('id');
+});
+
+// Rutas de gestión (solo administrador y organizador)
+Route::middleware('token:admin,organizador')->group(function () {
+    Route::get('/usuarios', [UsuarioController::class, 'getUsuarios']);
+    Route::get('/asistencias', [AsistenciaController::class, 'index']);
+});
+
+// Crear charlas (solo admin). Descomentar cuando el frontend envíe el token:
+Route::post('/charlas', [CharlaController::class, 'crearCharla'])->middleware('token:admin');
