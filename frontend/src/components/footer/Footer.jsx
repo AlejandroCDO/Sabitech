@@ -1,8 +1,14 @@
-
 import "./Footer.css";
 import logo from "../../assets/icons/banner.ico";
 
-export function Footer() {
+export function Footer({ onIrACharlas, onIrAReservas }) {
+    // Cambia de vista sin saltar por la página y vuelve arriba del todo
+    const ir = (evento, accion) => {
+        evento.preventDefault();
+        accion?.();
+        window.scrollTo(0, 0);
+    };
+
     return (
         <footer className="footer">
 
@@ -37,7 +43,9 @@ export function Footer() {
 
                     <h3>Explora</h3>
 
-                    <a href="#charlas">Agenda de charlas</a>
+                    <a href="#charlas" onClick={(e) => ir(e, onIrACharlas)}>
+                        Agenda de charlas
+                    </a>
                     <a href="#ponentes">Nuestros ponentes</a>
                     <a href="#comunidad">La comunidad</a>
 
@@ -48,7 +56,9 @@ export function Footer() {
 
                     <h3>Tu asistencia</h3>
 
-                    <a href="#reservas">Mis reservas</a>
+                    <a href="#reservas" onClick={(e) => ir(e, onIrAReservas)}>
+                        Mis reservas
+                    </a>
                     <a href="#como-llegar">Cómo llegar</a>
                     <a href="#preguntas">Preguntas frecuentes</a>
 

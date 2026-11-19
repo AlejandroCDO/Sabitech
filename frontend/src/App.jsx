@@ -1,4 +1,3 @@
-
 import { useCallback, useEffect, useState } from "react";
 import "./App.css";
 
@@ -37,10 +36,7 @@ function App() {
       hash = "detalle-reserva";
     } else if (vista === "perfil") {
       hash = "perfil";
-    } else if (
-      (vista === "inicio" || vista === "charlas") &&
-      detalleAbierto
-    ) {
+    } else if ((vista === "inicio" || vista === "charlas") && detalleAbierto) {
       hash = "detalle-charla";
     }
 
@@ -148,9 +144,7 @@ function App() {
           <Navbar
             logeado={logeado}
             usuario={usuario}
-            vistaActiva={
-              vista === "detalleReserva" ? "reservas" : vista
-            }
+            vistaActiva={vista === "detalleReserva" ? "reservas" : vista}
             onIrAInicio={irAInicio}
             onIrACharlas={irACharlas}
             onIrALogin={() => setVista("login")}
@@ -200,7 +194,10 @@ function App() {
             />
           )}
 
-          <Footer />
+          <Footer
+            onIrACharlas={() => setVista("charlas")}
+            onIrAReservas={() => setVista(logeado ? "reservas" : "login")}
+          />
         </>
       )}
 
